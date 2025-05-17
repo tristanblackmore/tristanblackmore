@@ -46,7 +46,7 @@
     .links {
       margin: 0;
       padding-left: 0;
-      list-style: none; /* Remove bullets */
+      list-style: none;
     }
 
     .links li {
@@ -58,11 +58,10 @@
       text-decoration: underline;
       transition:
         background-color var(--transition-speed) ease,
-        color var(--transition-speed) ease,
-        box-shadow var(--transition-speed) ease;
-      padding: 0 0.1em;
+        color var(--transition-speed) ease;
+      padding: 0.2em 0.4em; /* fixed padding so no jump */
       border-radius: var(--border-radius);
-      will-change: background-color, color, box-shadow;
+      will-change: background-color, color;
     }
 
     a:hover,
@@ -70,8 +69,7 @@
       background-color: var(--color-link-hover-bg);
       color: var(--color-link-hover-text);
       text-decoration: none;
-      padding: 0.2em 0.4em; /* Twice the original padding on all sides */
-      box-shadow: 0 2px 6px rgba(50, 134, 89, 0.4);
+      box-shadow: none; /* removed */
       outline: none;
     }
 
@@ -89,7 +87,6 @@
     @media (prefers-reduced-motion: reduce) {
       a {
         transition: none;
-        box-shadow: none;
       }
     }
   </style>
