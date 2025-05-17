@@ -18,23 +18,11 @@
       color: #000; /* Black text */
     }
 
-    a {
-      color: #000;
-      text-decoration: underline;
-    }
-
-    hr {
-      border: none;
-      border-top: 1px solid #ccc;
-      margin: 1em 0;
-    }
-
     p {
       margin: 0.4em 0;
       color: #000; /* Ensure black text */
     }
 
-    /* Extra space below the first line */
     p:first-of-type {
       margin-bottom: 1.4em;
     }
@@ -43,17 +31,31 @@
       margin: 0.3em 0;
     }
 
-    /* Unified highlighter style */
-    .highlight {
-      background-color: #339966; /* medium-dark green */
-      color: #fff;               /* white text for contrast */
-      padding: 0 0.2em;
+    a {
+      color: #000;
+      text-decoration: underline;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      padding: 0 0.1em; /* slight padding to avoid cramped highlight */
+      border-radius: 2px; /* slight rounding on hover */
+    }
+
+    a:hover {
+      background-color: #ddd; /* light gray highlight */
+      color: #000;            /* black text on highlight */
+      text-decoration: none;  /* remove underline on hover */
+      padding: 0 0.2em;       /* slightly increase padding on hover */
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #ccc;
+      margin: 1em 0;
     }
   </style>
 </head>
 <body>
 
-  <p><span class="highlight">Tristan Blackmore</span></p>
+  <p>Tristan Blackmore</p>
   <p>1994&nbsp;&nbsp;&nbsp;Born in Berkeley, California, USA</p>
   <p>2016&nbsp;&nbsp;&nbsp;University of Michigan (B.S.Arch)</p>
   <p>2018&nbsp;&nbsp;&nbsp;UC Berkeley (M.Arch)</p>
@@ -61,19 +63,19 @@
 
   <hr />
 
-  <p><span class="highlight">Contact</span></p>
+  <p>Contact</p>
   <p><a href="mailto:tristanblackmore@gmail.com" rel="noopener noreferrer">tristanblackmore@gmail.com</a></p>
   <p>+44 7508 792581</p>
 
   <hr />
 
-  <p><span class="highlight">Projects</span></p>
+  <p>Projects</p>
   <p><a href="https://www.instagram.com/tristanblackmore/?hl=en" target="_blank" rel="noopener noreferrer">tristan blackmore</a></p>
   <p><a href="https://www.instagram.com/humanizezine/?hl=en" target="_blank" rel="noopener noreferrer">humanize zine</a></p>
 
   <hr />
 
-  <p><span class="highlight">Research I'm currently following</span></p>
+  <p>Research I'm currently following</p>
   <div class="links">
     <p><a href="https://doughnuteconomics.org" target="_blank" rel="noopener noreferrer">Doughnut Economics</a></p>
     <p><a href="https://longnow.org" target="_blank" rel="noopener noreferrer">Long Now</a></p>
