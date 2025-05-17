@@ -6,50 +6,99 @@
   <title>Tristan Blackmore</title>
 
   <style>
+    /* CSS Variables for easy theming and maintenance */
+    :root {
+      --color-text: #000000;
+      --color-bg: #ffffff;
+      --color-link: #000000;
+      --color-link-hover-bg: #328659;
+      --color-link-hover-text: #ffffff;
+      --spacing-base: 0.4em;
+      --spacing-large: 1.4em;
+      --border-radius: 2px;
+      --transition-speed: 0.3s;
+      --hr-color: #ccc;
+      --max-content-width: 600px;
+      --font-family: Helvetica, Arial, sans-serif;
+    }
+
+    /* Reset and base styles */
     body {
-      font-family: Helvetica, Arial, sans-serif;
-      max-width: 600px;
+      font-family: var(--font-family);
+      max-width: var(--max-content-width);
       margin: 40px auto;
       padding: 0 20px;
       line-height: 1.5;
-      font-size: 1.125rem; /* Increased font size */
+      font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
       font-weight: normal;
-      background-color: #fff;
-      color: #000; /* Black text */
+      background-color: var(--color-bg);
+      color: var(--color-text);
     }
 
+    /* Paragraph spacing */
     p {
-      margin: 0.4em 0;
-      color: #000; /* Ensure black text */
+      margin: var(--spacing-base) 0;
+      color: var(--color-text);
     }
 
     p:first-of-type {
-      margin-bottom: 1.4em;
+      margin-bottom: var(--spacing-large);
     }
 
-    .links p {
+    /* Semantic and accessible link list for research */
+    .links {
+      margin: 0;
+      padding-left: 1.2em; /* Indent list for clarity */
+    }
+
+    .links li {
       margin: 0.3em 0;
+      list-style-type: disc;
     }
 
+    /* Base link styles */
     a {
-      color: #000;
+      color: var(--color-link);
       text-decoration: underline;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      padding: 0 0.1em; /* slight padding to avoid cramped highlight */
-      border-radius: 2px; /* slight rounding on hover */
+      transition:
+        background-color var(--transition-speed) ease,
+        color var(--transition-speed) ease,
+        box-shadow var(--transition-speed) ease;
+      padding: 0 0.1em;
+      border-radius: var(--border-radius);
+      will-change: background-color, color, box-shadow;
     }
 
-    a:hover {
-      background-color: #328659; /* deeper green highlight */
-      color: #fff;               /* white text on highlight */
-      text-decoration: none;     /* remove underline on hover */
-      padding: 0 0.2em;          /* slightly increase padding on hover */
+    /* Hover and keyboard focus styles */
+    a:hover,
+    a:focus-visible {
+      background-color: var(--color-link-hover-bg);
+      color: var(--color-link-hover-text);
+      text-decoration: none;
+      padding: 0 0.2em;
+      box-shadow: 0 2px 6px rgba(50, 134, 89, 0.4);
+      outline: none;
     }
 
+    /* Clear visible focus only for keyboard users */
+    a:focus-visible {
+      outline: 2px solid var(--color-link-hover-bg);
+      outline-offset: 2px;
+    }
+
+    /* Horizontal rule style */
     hr {
       border: none;
-      border-top: 1px solid #ccc;
+      border-top: 1px solid var(--hr-color);
       margin: 1em 0;
+    }
+
+    /* Accessibility: Reduce motion for sensitive users */
+    @media (prefers-reduced-motion: reduce) {
+      a {
+        transition: none;
+        box-shadow: none;
+      }
     }
   </style>
 </head>
@@ -70,20 +119,20 @@
   <hr />
 
   <p>Projects</p>
-  <p><a href="https://www.instagram.com/tristanblackmore/?hl=en" target="_blank" rel="noopener noreferrer">tristan blackmore</a></p>
-  <p><a href="https://www.instagram.com/humanizezine/?hl=en" target="_blank" rel="noopener noreferrer">humanize zine</a></p>
+  <p><a href="https://www.instagram.com/tristanblackmore/?hl=en" target="_blank" rel="noopener noreferrer noopener">tristan blackmore</a></p>
+  <p><a href="https://www.instagram.com/humanizezine/?hl=en" target="_blank" rel="noopener noreferrer noopener">humanize zine</a></p>
 
   <hr />
 
   <p>Research I'm currently following</p>
-  <div class="links">
-    <p><a href="https://doughnuteconomics.org" target="_blank" rel="noopener noreferrer">Doughnut Economics</a></p>
-    <p><a href="https://longnow.org" target="_blank" rel="noopener noreferrer">Long Now</a></p>
-    <p><a href="https://www.c40.org" target="_blank" rel="noopener noreferrer">C40 Cities</a></p>
-    <p><a href="https://www.stockholmresilience.org/" target="_blank" rel="noopener noreferrer">Stockholm Resilience</a></p>
-    <p><a href="https://autonomy.work/" target="_blank" rel="noopener noreferrer">Autonomy</a></p>
-    <p><a href="https://www.citiesforum.org/news/superblock-superilla-barcelona-a-city-redefined/" target="_blank" rel="noopener noreferrer">Barcelona Superilla</a></p>
-  </div>
+  <ul class="links">
+    <li><a href="https://doughnuteconomics.org" target="_blank" rel="noopener noreferrer noopener">Doughnut Economics</a></li>
+    <li><a href="https://longnow.org" target="_blank" rel="noopener noreferrer noopener">Long Now</a></li>
+    <li><a href="https://www.c40.org" target="_blank" rel="noopener noreferrer noopener">C40 Cities</a></li>
+    <li><a href="https://www.stockholmresilience.org/" target="_blank" rel="noopener noreferrer noopener">Stockholm Resilience</a></li>
+    <li><a href="https://autonomy.work/" target="_blank" rel="noopener noreferrer noopener">Autonomy</a></li>
+    <li><a href="https://www.citiesforum.org/news/superblock-superilla-barcelona-a-city-redefined/" target="_blank" rel="noopener noreferrer noopener">Barcelona Superilla</a></li>
+  </ul>
 
 </body>
 </html>
