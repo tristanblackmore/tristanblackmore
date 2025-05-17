@@ -7,16 +7,14 @@
 
   <style>
     :root {
-      --color-text: #c9d1d9;
-      --color-bg: #0d1117;
-      --color-link: #58a6ff;
-      --color-link-hover-bg: #238636;
-      --color-link-hover-text: #ffffff;
+      --color-text: #000000;
+      --color-bg: #ffffff;
+      --color-link: #000000;
       --spacing-base: 0.4em;
       --spacing-large: 1.4em;
       --border-radius: 2px;
       --transition-speed: 0.3s;
-      --hr-color: #30363d;
+      --hr-color: #ccc;
       --max-content-width: 600px;
       --font-family: Helvetica, Arial, sans-serif;
     }
@@ -62,19 +60,19 @@
       padding: 0.2em 0.4em;
       border-radius: var(--border-radius);
       will-change: background-color, color;
+      cursor: pointer;
     }
 
+    /* On hover, colors will be set dynamically with JS */
     a:hover,
     a:focus-visible {
-      background-color: var(--color-link-hover-bg);
-      color: var(--color-link-hover-text);
+      color: #fff !important;
       text-decoration: none;
-      box-shadow: none;
       outline: none;
     }
 
     a:focus-visible {
-      outline: 2px solid var(--color-link-hover-bg);
+      outline: 2px solid currentColor;
       outline-offset: 2px;
     }
 
@@ -122,6 +120,49 @@
     <li><a href="https://autonomy.work/" target="_blank" rel="noopener noreferrer noopener">Autonomy</a></li>
     <li><a href="https://www.citiesforum.org/news/superblock-superilla-barcelona-a-city-redefined/" target="_blank" rel="noopener noreferrer noopener">Barcelona Superilla</a></li>
   </ul>
+
+  <script>
+    // Generates a random dark color ensuring enough contrast for white text
+    function getRandomDarkColor() {
+      // We'll generate RGB values constrained to dark tones
+      // Dark means RGB values between 0 and 100 approx
+      // We'll avoid near black by setting minimums around 30 to avoid too dark
+
+      // Generate r, g, b between 30 and 100 randomly
+      const min = 30;
+      const max = 100;
+      const r = Math.floor(Math.random() * (max - min) + min);
+      const g = Math.floor(Math.random() * (max - min) + min);
+      const b = Math.floor(Math.random() * (max - min) + min);
+
+      return `rgb(${r},${g},${b})`;
+    }
+
+    document.querySelectorAll('a').forEach(link => {
+      let lastColor = null;
+
+      link.addEventListener('mouseenter', () => {
+        let newColor;
+
+        // Generate new color ensuring it is different from lastColor
+        do {
+          newColor = getRandomDarkColor();
+        } while (newColor === lastColor);
+
+        lastColor = newColor;
+
+        // Apply styles inline
+        link.style.backgroundColor = newColor;
+        link.style.color = '#fff';
+      });
+
+      link.addEventListener('mouseleave', () => {
+        // Remove inline styles to revert to default
+        link.style.backgroundColor = '';
+        link.style.color = '';
+      });
+    });
+  </script>
 
 </body>
 </html>
