@@ -6,7 +6,6 @@
   <title>Tristan Blackmore</title>
 
   <style>
-    /* CSS Variables for easy theming and maintenance */
     :root {
       --color-text: #000000;
       --color-bg: #ffffff;
@@ -22,7 +21,6 @@
       --font-family: Helvetica, Arial, sans-serif;
     }
 
-    /* Reset and base styles */
     body {
       font-family: var(--font-family);
       max-width: var(--max-content-width);
@@ -35,7 +33,6 @@
       color: var(--color-text);
     }
 
-    /* Paragraph spacing */
     p {
       margin: var(--spacing-base) 0;
       color: var(--color-text);
@@ -45,18 +42,17 @@
       margin-bottom: var(--spacing-large);
     }
 
-    /* Semantic and accessible link list for research */
+    /* Research links list */
     .links {
       margin: 0;
-      padding-left: 1.2em; /* Indent list for clarity */
+      padding-left: 0;
+      list-style: none; /* Remove bullets */
     }
 
     .links li {
       margin: 0.3em 0;
-      list-style-type: disc;
     }
 
-    /* Base link styles */
     a {
       color: var(--color-link);
       text-decoration: underline;
@@ -69,31 +65,27 @@
       will-change: background-color, color, box-shadow;
     }
 
-    /* Hover and keyboard focus styles */
     a:hover,
     a:focus-visible {
       background-color: var(--color-link-hover-bg);
       color: var(--color-link-hover-text);
       text-decoration: none;
-      padding: 0 0.2em;
+      padding: 0.2em 0.4em; /* Twice the original padding on all sides */
       box-shadow: 0 2px 6px rgba(50, 134, 89, 0.4);
       outline: none;
     }
 
-    /* Clear visible focus only for keyboard users */
     a:focus-visible {
       outline: 2px solid var(--color-link-hover-bg);
       outline-offset: 2px;
     }
 
-    /* Horizontal rule style */
     hr {
       border: none;
       border-top: 1px solid var(--hr-color);
       margin: 1em 0;
     }
 
-    /* Accessibility: Reduce motion for sensitive users */
     @media (prefers-reduced-motion: reduce) {
       a {
         transition: none;
