@@ -12,7 +12,7 @@
       --spacing-base: 0.4em;
       --spacing-large: 1.4em;
       --border-radius: 2px;
-      --transition-speed: 0.75s; /* fade duration */
+      --fade-duration: 0.75s; /* fade duration */
       --hr-color: #ccc;
       --max-content-width: 600px;
       --font-family: Helvetica, Arial, sans-serif;
@@ -56,10 +56,8 @@
       border-radius: var(--border-radius);
       cursor: pointer;
       will-change: background-color, color;
-      /* Transition for bg and text color */
-      transition:
-        background-color var(--transition-speed) ease,
-        color var(--transition-speed) ease;
+      /* No default transition */
+      transition: none;
     }
 
     hr {
@@ -70,7 +68,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       a {
-        transition: none;
+        transition: none !important;
       }
     }
   </style>
@@ -140,6 +138,9 @@
       let lastColor = null;
 
       link.addEventListener('mouseenter', () => {
+        // Disable transition to pop color instantly
+        link.style.transition = 'none';
+
         let newColor;
         do {
           newColor = brightColors[Math.floor(Math.random() * brightColors.length)];
@@ -153,9 +154,19 @@
       });
 
       link.addEventListener('mouseleave', () => {
-        // Clear highlight immediately, triggering CSS transition to default colors
+        // Enable transition on leave to fade out
+        link.style.transition = `background-color 0.75s ease, color 0.75s ease`;
+
+        // Reset colors to default, triggering fade-out transition
         link.style.backgroundColor = '';
         link.style.color = '';
+
+        // After transition ends, remove inline transition style for next hover
+        const cleanupTransition = () => {
+          link.style.transition = 'none';
+          link.removeEventListener('transitionend', cleanupTransition);
+        };
+        link.addEventListener('transitionend', cleanupTransition);
       });
     });
   </script>
