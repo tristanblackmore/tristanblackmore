@@ -12,7 +12,7 @@
       --spacing-base: 0.4em;
       --spacing-large: 1.4em;
       --border-radius: 2px;
-      --transition-speed: 0.2s; /* updated faster fade */
+      --transition-speed: 0.75s; /* fade duration */
       --hr-color: #ccc;
       --max-content-width: 600px;
       --font-family: Helvetica, Arial, sans-serif;
@@ -52,13 +52,14 @@
     a {
       color: var(--color-text);
       text-decoration: underline;
-      transition:
-        background-color var(--transition-speed) ease,
-        color var(--transition-speed) ease;
       padding: 0.2em 0.4em;
       border-radius: var(--border-radius);
       cursor: pointer;
       will-change: background-color, color;
+      /* Transition for bg and text color */
+      transition:
+        background-color var(--transition-speed) ease,
+        color var(--transition-speed) ease;
     }
 
     hr {
@@ -137,40 +138,24 @@
 
     document.querySelectorAll('a').forEach(link => {
       let lastColor = null;
-      let fadeTimeout = null;
-
-      function clearFadeTimeout() {
-        if (fadeTimeout) {
-          clearTimeout(fadeTimeout);
-          fadeTimeout = null;
-        }
-      }
 
       link.addEventListener('mouseenter', () => {
-        clearFadeTimeout();
-
         let newColor;
         do {
           newColor = brightColors[Math.floor(Math.random() * brightColors.length)];
         } while (newColor === lastColor);
-
         lastColor = newColor;
+
         link.style.backgroundColor = newColor;
 
         const brightness = getBrightness(newColor);
-        if (brightness > 180) {
-          link.style.color = '#000';
-        } else {
-          link.style.color = '#fff';
-        }
+        link.style.color = brightness > 180 ? '#000' : '#fff';
       });
 
       link.addEventListener('mouseleave', () => {
-        fadeTimeout = setTimeout(() => {
-          link.style.backgroundColor = '';
-          link.style.color = '';
-          fadeTimeout = null;
-        }, 1000);
+        // Clear highlight immediately, triggering CSS transition to default colors
+        link.style.backgroundColor = '';
+        link.style.color = '';
       });
     });
   </script>
