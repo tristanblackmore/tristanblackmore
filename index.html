@@ -65,7 +65,6 @@
 
     a:hover,
     a:focus-visible {
-      color: #fff !important;
       text-decoration: none;
       outline: none;
     }
@@ -121,10 +120,8 @@
   </ul>
 
   <script>
-    // 216 web safe colors components
     const steps = ['00', '33', '66', '99', 'CC', 'FF'];
 
-    // Generate all 216 colors
     function generateWebSafeColors() {
       const colors = [];
       for (let r of steps) {
@@ -137,13 +134,12 @@
       return colors;
     }
 
-    // Calculate brightness of hex color (0-255)
+    // Perceived brightness formula for accessibility decision
     function getBrightness(hex) {
-      // Extract r,g,b
       const r = parseInt(hex.substr(1,2), 16);
       const g = parseInt(hex.substr(3,2), 16);
       const b = parseInt(hex.substr(5,2), 16);
-      // Perceived brightness formula (standard)
+      // Standard formula
       return Math.sqrt(
         0.299 * (r * r) +
         0.587 * (g * g) +
@@ -151,11 +147,10 @@
       );
     }
 
-    // Filter bright colors by brightness threshold (~180+)
+    // Filter to bright colors (average brightness >= 150) so backgrounds are vivid enough
     const allColors = generateWebSafeColors();
-    const brightColors = allColors.filter(c => getBrightness(c) >= 180);
+    const brightColors = allColors.filter(c => getBrightness(c) >= 150);
 
-    // On hover, pick random bright color different from last for that link
     document.querySelectorAll('a').forEach(link => {
       let lastColor = null;
 
@@ -167,7 +162,17 @@
 
         lastColor = newColor;
         link.style.backgroundColor = newColor;
-        link.style.color = '#fff';
+
+        // Set text color based on background brightness
+        const brightness = getBrightness(newColor);
+
+        if (brightness > 180) {
+          // Background very light -> black text
+          link.style.color = '#000';
+        } else {
+          // Background darker -> white text
+          link.style.color = '#fff';
+        }
       });
 
       link.addEventListener('mouseleave', () => {
