@@ -6,22 +6,23 @@
   <title>Tristan Blackmore</title>
   <style>
     body {
+      background-color: #121212;
+      color: #fff;
       font-family: 'Franklin Gothic Book', 'Franklin Gothic Medium', Arial, sans-serif;
       max-width: 600px;
       margin: 40px auto;
       padding: 0 20px;
       line-height: 1.4;
-      color: #000;
       font-size: 1rem;
       font-weight: normal;
     }
     a {
-      color: #000;
+      color: #fff;
       text-decoration: underline;
     }
     hr {
       border: none;
-      border-top: 1px solid #ccc;
+      border-top: 1px solid #555;
       margin: 1em 0;
     }
     p {
@@ -29,10 +30,6 @@
     }
     .links p {
       margin: 0.3em 0;
-    }
-    #weather {
-      font-weight: normal;
-      font-style: italic;
     }
   </style>
 </head>
@@ -42,7 +39,7 @@
   <p>1994&nbsp;&nbsp;&nbsp;Born in Berkeley, California, USA</p>
   <p>2016&nbsp;&nbsp;&nbsp;University of Michigan (B.S.Arch)</p>
   <p>2018&nbsp;&nbsp;&nbsp;UC Berkeley (M.Arch)</p>
-  <p id="location">Currently lives and works in London, UK<span id="weather"></span></p>
+  <p>Currently lives and works in London, UK</p>
 
   <hr />
 
@@ -67,27 +64,6 @@
     <p><a href="https://autonomy.work/" target="_blank">autonomy.work</a></p>
     <p><a href="https://www.citiesforum.org/news/superblock-superilla-barcelona-a-city-redefined/" target="_blank">citiesforum.org – Barcelona Superilla</a></p>
   </div>
-
-  <script>
-    // Replace YOUR_API_KEY_HERE with your OpenWeatherMap API key
-    const apiKey = 'YOUR_API_KEY_HERE';
-    const city = 'London,uk';
-    const weatherSpan = document.getElementById('weather');
-
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data && data.main && data.weather && data.weather.length > 0) {
-          const temp = Math.round(data.main.temp);
-          const description = data.weather[0].description;
-          weatherSpan.textContent = `, where it is now ${temp}°C and ${description}`;
-        }
-      })
-      .catch(err => {
-        console.error('Weather fetch error:', err);
-        weatherSpan.textContent = '';
-      });
-  </script>
 
 </body>
 </html>
