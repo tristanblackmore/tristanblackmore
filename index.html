@@ -63,7 +63,6 @@
       cursor: pointer;
     }
 
-    /* On hover, colors will be set dynamically with JS */
     a:hover,
     a:focus-visible {
       color: #fff !important;
@@ -122,42 +121,56 @@
   </ul>
 
   <script>
-    // Generates a random dark color ensuring enough contrast for white text
-    function getRandomDarkColor() {
-      // We'll generate RGB values constrained to dark tones
-      // Dark means RGB values between 0 and 100 approx
-      // We'll avoid near black by setting minimums around 30 to avoid too dark
+    // 216 web safe colors components
+    const steps = ['00', '33', '66', '99', 'CC', 'FF'];
 
-      // Generate r, g, b between 30 and 100 randomly
-      const min = 30;
-      const max = 100;
-      const r = Math.floor(Math.random() * (max - min) + min);
-      const g = Math.floor(Math.random() * (max - min) + min);
-      const b = Math.floor(Math.random() * (max - min) + min);
-
-      return `rgb(${r},${g},${b})`;
+    // Generate all 216 colors
+    function generateWebSafeColors() {
+      const colors = [];
+      for (let r of steps) {
+        for (let g of steps) {
+          for (let b of steps) {
+            colors.push(`#${r}${g}${b}`);
+          }
+        }
+      }
+      return colors;
     }
 
+    // Calculate brightness of hex color (0-255)
+    function getBrightness(hex) {
+      // Extract r,g,b
+      const r = parseInt(hex.substr(1,2), 16);
+      const g = parseInt(hex.substr(3,2), 16);
+      const b = parseInt(hex.substr(5,2), 16);
+      // Perceived brightness formula (standard)
+      return Math.sqrt(
+        0.299 * (r * r) +
+        0.587 * (g * g) +
+        0.114 * (b * b)
+      );
+    }
+
+    // Filter bright colors by brightness threshold (~180+)
+    const allColors = generateWebSafeColors();
+    const brightColors = allColors.filter(c => getBrightness(c) >= 180);
+
+    // On hover, pick random bright color different from last for that link
     document.querySelectorAll('a').forEach(link => {
       let lastColor = null;
 
       link.addEventListener('mouseenter', () => {
         let newColor;
-
-        // Generate new color ensuring it is different from lastColor
         do {
-          newColor = getRandomDarkColor();
+          newColor = brightColors[Math.floor(Math.random() * brightColors.length)];
         } while (newColor === lastColor);
 
         lastColor = newColor;
-
-        // Apply styles inline
         link.style.backgroundColor = newColor;
         link.style.color = '#fff';
       });
 
       link.addEventListener('mouseleave', () => {
-        // Remove inline styles to revert to default
         link.style.backgroundColor = '';
         link.style.color = '';
       });
