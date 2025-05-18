@@ -28,7 +28,6 @@
       color: var(--color-text);
     }
 
-    /* Title style matching main page */
     p {
       margin: var(--spacing-base) 0;
       color: var(--color-text);
@@ -43,7 +42,6 @@
       cursor: pointer;
     }
 
-    /* Image styling */
     #gallery-image {
       display: block;
       max-width: 100%;
@@ -58,16 +56,17 @@
 
   <!-- Header / site title -->
   <p><a href="/">Tristan Blackmore</a></p>
-  
+
   <!-- Random image viewer -->
-  <img id="gallery-image" src="assets/images/a (1).jpg" alt="Gallery Image" />
+  <img id="gallery-image" src="https://res.cloudinary.com/dec78b2ft/image/upload/imageresourceindex/a%20(1).jpg" alt="Gallery Image" />
 
   <script>
-    const imageCount = 600; // adjust as you add more images
+    const imageCount = 719;
+    const cloudinaryBase = 'https://res.cloudinary.com/dec78b2ft/image/upload/imageresourceindex/';
     const images = [];
 
     for (let i = 1; i <= imageCount; i++) {
-      images.push(`assets/images/a (${i}).jpg`);
+      images.push(`${cloudinaryBase}a%20(${i}).jpg`);
     }
 
     const galleryImage = document.getElementById('gallery-image');
