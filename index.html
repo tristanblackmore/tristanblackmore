@@ -7,8 +7,8 @@
 
   <style>
     :root {
-      --color-text: #000000;
-      --color-bg: #ffffff;
+      --color-text: #000;
+      --color-bg: #fff;
       --spacing-base: 0.4em;
       --spacing-large: 1.4em;
       --border-radius: 2px;
@@ -32,9 +32,7 @@
 
     p {
       margin: var(--spacing-base) 0;
-      color: var(--color-text);
     }
-
     p:first-of-type {
       margin-bottom: var(--spacing-large);
     }
@@ -55,11 +53,9 @@
       padding: 0.2em 0.4em;
       border-radius: var(--border-radius);
       cursor: pointer;
-      /* Background-color transition only for fade-out on mouse leave */
       transition: background-color var(--fade-duration) ease, color var(--fade-duration) ease;
+      /* Note: On hover, background color changes instantly in JS */
     }
-
-    /* We'll override transition on hover in JS for immediate background color change */
 
     hr {
       border: none;
@@ -108,15 +104,9 @@
   </ul>
 
   <script>
-    // Curated palette pillars (Hues in degrees)
-    // Refined orange-gold pillar (hue 30-50, saturation 90%, lightness 50-60%)
-    const palette = [
-      { name: "orangish-red", hues: [5, 15], saturation: 85, lightness: [40, 50] }, // red-orange pillar
-      { name: "orange-gold", hues: [30, 50], saturation: 90, lightness: [50, 60] },  // refined yellow-orange no browns
-      { name: "blue", hues: [210, 230], saturation: 85, lightness: [40, 50] },
-      { name: "green", hues: [130, 150], saturation: 85, lightness: [40, 50] },
-      { name: "amaranth", hues: [320, 340], saturation: 85, lightness: [40, 50] }
-    ];
+    // Global color index for linear progression (0-100)
+    let colorIndex = Math.floor(Math.random() * 101); // Random start on first hover
+    const step = 5; // Increment step
 
     // Convert HSL to HEX
     function hslToHex(h, s, l) {
@@ -126,23 +116,23 @@
       let r, g, b;
 
       if (s === 0) {
-        r = g = b = l;
+        r = g = b = l; // achromatic
       } else {
         const hue2rgb = (p, q, t) => {
           if (t < 0) t += 1;
           if (t > 1) t -= 1;
-          if (t < 1/6) return p + (q - p) * 6 * t;
-          if (t < 1/2) return q;
-          if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+          if (t < 1 / 6) return p + (q - p) * 6 * t;
+          if (t < 1 / 2) return q;
+          if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
           return p;
         };
 
         const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
         const p = 2 * l - q;
 
-        r = hue2rgb(p, q, h + 1/3);
+        r = hue2rgb(p, q, h + 1 / 3);
         g = hue2rgb(p, q, h);
-        b = hue2rgb(p, q, h - 1/3);
+        b = hue2rgb(p, q, h - 1 / 3);
       }
 
       const toHex = x => {
@@ -153,74 +143,40 @@
       return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
     }
 
-    // Calculate brightness for contrast (luminance-based)
+    // Calculate brightness for contrast decision
     function getBrightness(hex) {
       const r = parseInt(hex.substr(1, 2), 16);
       const g = parseInt(hex.substr(3, 2), 16);
       const b = parseInt(hex.substr(5, 2), 16);
-      return Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
+      return Math.sqrt(0.299 * r * r + 0.587 * g * g + 0.114 * b * b);
     }
 
-    // Generate palette colors with random hue within pillar range, saturation and lightness range
-    function generateCuratedPalette() {
-      const colors = [];
-      for (let pillar of palette) {
-        for (let i = 0; i < 3; i++) {
-          // Random hue in range
-          const h = pillar.hues[0] + Math.random() * (pillar.hues[1] - pillar.hues[0]);
-          // Saturation fixed at pillar.saturation
-          const s = pillar.saturation;
-          // Lightness within range
-          const l = pillar.lightness[0] + Math.random() * (pillar.lightness[1] - pillar.lightness[0]);
-          colors.push(hslToHex(h, s, l));
-        }
-      }
-      return colors;
-    }
-
-    const allBrightColors = generateCuratedPalette();
-
-    let lastHue = null;
-
-    // Extract hue from hex for avoiding repeats
-    function hexToHue(hex) {
-      const r = parseInt(hex.substr(1, 2), 16) / 255;
-      const g = parseInt(hex.substr(3, 2), 16) / 255;
-      const b = parseInt(hex.substr(5, 2), 16) / 255;
-      const max = Math.max(r, g, b), min = Math.min(r, g, b);
-      let h = 0;
-      if (max !== min) {
-        if (max === r) {
-          h = (60 * ((g - b) / (max - min)) + 360) % 360;
-        } else if (max === g) {
-          h = (60 * ((b - r) / (max - min)) + 120) % 360;
-        } else {
-          h = (60 * ((r - g) / (max - min)) + 240) % 360;
-        }
-      }
-      return h;
+    // Map colorIndex (0-100) to a full HSL hue 0-360 deg, with fixed saturation and lightness for vibrancy
+    function getColorFromIndex(idx) {
+      const hue = (idx / 100) * 360;
+      const saturation = 85;
+      const lightness = 50;
+      return hslToHex(hue, saturation, lightness);
     }
 
     document.querySelectorAll('a').forEach(link => {
       link.addEventListener('mouseenter', () => {
-        // Remove transition for instant highlight on hover
+        // Instant highlight on hover (remove CSS transition)
         link.style.transition = 'none';
 
-        let newColor, newHue;
-        do {
-          newColor = allBrightColors[Math.floor(Math.random() * allBrightColors.length)];
-          newHue = hexToHue(newColor);
-        } while (lastHue !== null && Math.abs(newHue - lastHue) < 40);
-        lastHue = newHue;
+        // Get color for current index, then increment index with wraparound
+        const bgColor = getColorFromIndex(colorIndex);
+        colorIndex = (colorIndex + step) % 101;
 
-        link.style.backgroundColor = newColor;
+        link.style.backgroundColor = bgColor;
 
-        const brightness = getBrightness(newColor);
-        link.style.color = brightness < 130 ? '#ffffff' : '#000000';
+        // Contrast text color black/white
+        const brightness = getBrightness(bgColor);
+        link.style.color = brightness < 130 ? '#fff' : '#000';
       });
 
       link.addEventListener('mouseleave', () => {
-        // Restore transition for smooth fade-out
+        // Restore fade-out transition
         link.style.transition = `background-color var(--fade-duration) ease, color var(--fade-duration) ease`;
         link.style.backgroundColor = '';
         link.style.color = '';
