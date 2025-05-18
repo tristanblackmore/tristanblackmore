@@ -2,64 +2,57 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tristan Blackmore - Gallery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery</title>
   <style>
-    :root {
-      --color-bg: #ffffff;
-      --color-text: #000000;
-      --font-family: Helvetica, Arial, sans-serif;
-    }
-
     body {
-      background-color: var(--color-bg);
-      color: var(--color-text);
-      font-family: var(--font-family);
-      margin: 40px auto;
-      padding: 0 20px;
-      max-width: 600px;
+      font-family: Helvetica, Arial, sans-serif;
       text-align: center;
+      margin: 40px auto;
+      max-width: 600px;
+      background: #fff;
+      color: #000;
     }
-
-    a {
-      color: var(--color-text);
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1.5em;
-    }
-
     img {
-      margin-top: 20px;
       max-width: 100%;
-      height: auto;
       cursor: pointer;
-      border: 2px solid #000;
+      border-radius: 4px;
+      transition: opacity 0.4s ease;
+    }
+    a {
+      font-weight: bold;
+      text-decoration: none;
+      color: inherit;
+      font-size: 1.5em;
     }
   </style>
 </head>
 <body>
   <p><a href="index.html">Tristan Blackmore</a></p>
-
-  <img id="random-image" src="assets/images/image1.jpg" alt="Gallery Image" onclick="showRandomImage()" />
+  <img id="randomImage" src="" alt="Click to change" />
 
   <script>
-    const imagePaths = [
-      'assets/images/image1.jpg',
-      'assets/images/image2.jpg',
-      'assets/images/image3.jpg',
-      'assets/images/image4.jpg',
-      'assets/images/image5.jpg'
-      // Add more filenames here if needed
-    ];
+    const imageBasePath = 'assets/images/';
+    let currentImage = null;
 
-    function showRandomImage() {
-      const img = document.getElementById('random-image');
-      let newSrc;
-      do {
-        newSrc = imagePaths[Math.floor(Math.random() * imagePaths.length)];
-      } while (img.src.includes(newSrc));
-      img.src = newSrc;
-    }
+    fetch('assets/imageList.json')
+      .then(response => response.json())
+      .then(imageList => {
+        function pickRandomImage() {
+          let newImage;
+          do {
+            newImage = imageList[Math.floor(Math.random() * imageList.length)];
+          } while (newImage === currentImage && imageList.length > 1);
+          currentImage = newImage;
+          document.getElementById('randomImage').src = imageBasePath + newImage;
+        }
+
+        document.getElementById('randomImage').addEventListener('click', pickRandomImage);
+        pickRandomImage(); // Initial image
+      })
+      .catch(err => {
+        console.error("⚠️ Couldn't load imageList.json", err);
+      });
   </script>
 </body>
 </html>
