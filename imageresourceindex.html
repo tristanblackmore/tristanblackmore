@@ -61,11 +61,14 @@
   <img id="gallery-image" src="" alt="Gallery Image" />
 
   <script>
-    const imageCount = 719; // Total number of images in Cloudinary
+    const imageCount = 719;
     const cloudName = 'dec78b2ft';
-
     const galleryImage = document.getElementById('gallery-image');
 
+    // Retrieve pre-selected filename from localStorage (if available)
+    const preselectedImage = localStorage.getItem('imageResourceIndexImage');
+
+    // Helper: generate a random image URL
     function getRandomImage(currentSrc) {
       let newIndex;
       let newUrl;
@@ -78,9 +81,18 @@
       return newUrl;
     }
 
-    // Set a random initial image on page load
-    galleryImage.src = getRandomImage(null);
+    // Initialize image
+    let initialUrl;
 
+    if (preselectedImage) {
+      initialUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${preselectedImage}`;
+    } else {
+      initialUrl = getRandomImage(null);
+    }
+
+    galleryImage.src = initialUrl;
+
+    // On click, load a different random image
     galleryImage.addEventListener('click', () => {
       const currentSrc = galleryImage.getAttribute('src');
       const nextImage = getRandomImage(currentSrc);
