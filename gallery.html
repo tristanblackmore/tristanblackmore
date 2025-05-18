@@ -2,57 +2,96 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gallery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gallery - Tristan Blackmore</title>
+
   <style>
+    :root {
+      --color-text: #000000;
+      --color-bg: #ffffff;
+      --spacing-base: 0.4em;
+      --spacing-large: 1.4em;
+      --border-radius: 2px;
+      --max-content-width: 600px;
+      --font-family: Helvetica, Arial, sans-serif;
+    }
+
     body {
-      font-family: Helvetica, Arial, sans-serif;
-      text-align: center;
+      font-family: var(--font-family);
+      max-width: var(--max-content-width);
       margin: 40px auto;
-      max-width: 600px;
-      background: #fff;
-      color: #000;
+      padding: 0 20px;
+      line-height: 1.5;
+      font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
+      font-weight: normal;
+      background-color: var(--color-bg);
+      color: var(--color-text);
     }
-    img {
-      max-width: 100%;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: opacity 0.4s ease;
+
+    /* Match the title style exactly */
+    p {
+      margin: var(--spacing-base) 0;
+      color: var(--color-text);
+      font-family: var(--font-family);
+      font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
+      font-weight: normal;
     }
-    a {
-      font-weight: bold;
-      text-decoration: none;
+
+    /* Remove underline from link, keep color same */
+    p a {
       color: inherit;
-      font-size: 1.5em;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* Image styling */
+    #gallery-image {
+      display: block;
+      max-width: 100%;
+      margin-top: var(--spacing-large);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      user-select: none;
     }
   </style>
 </head>
 <body>
+
+  <!-- Title with link back to main page -->
   <p><a href="index.html">Tristan Blackmore</a></p>
-  <img id="randomImage" src="" alt="Click to change" />
+
+  <!-- Image that changes on click -->
+  <img id="gallery-image" src="gallery/image1.jpg" alt="Gallery Image" />
 
   <script>
-    const imageBasePath = 'assets/images/';
-    let currentImage = null;
+    // List of images in gallery folder
+    // Replace these filenames with your actual images or update manually when you add/remove images
+    const images = [
+      'gallery/image1.jpg',
+      'gallery/image2.jpg',
+      'gallery/image3.jpg',
+      'gallery/image4.jpg',
+      'gallery/image5.jpg'
+    ];
 
-    fetch('assets/imageList.json')
-      .then(response => response.json())
-      .then(imageList => {
-        function pickRandomImage() {
-          let newImage;
-          do {
-            newImage = imageList[Math.floor(Math.random() * imageList.length)];
-          } while (newImage === currentImage && imageList.length > 1);
-          currentImage = newImage;
-          document.getElementById('randomImage').src = imageBasePath + newImage;
-        }
+    const galleryImage = document.getElementById('gallery-image');
 
-        document.getElementById('randomImage').addEventListener('click', pickRandomImage);
-        pickRandomImage(); // Initial image
-      })
-      .catch(err => {
-        console.error("⚠️ Couldn't load imageList.json", err);
-      });
+    // Function to get random image different from current one
+    function getRandomImage(currentSrc) {
+      let newImage;
+      do {
+        newImage = images[Math.floor(Math.random() * images.length)];
+      } while (newImage === currentSrc);
+      return newImage;
+    }
+
+    // On click, swap image to a new random one
+    galleryImage.addEventListener('click', () => {
+      const currentSrc = galleryImage.getAttribute('src');
+      const nextImage = getRandomImage(currentSrc);
+      galleryImage.setAttribute('src', nextImage);
+    });
   </script>
+
 </body>
 </html>
