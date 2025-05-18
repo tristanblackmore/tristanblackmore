@@ -4,11 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tristan Blackmore</title>
-  
-  <!-- Preload first image in Image Resource Index to reduce lag -->
-  <link rel="preload" as="image" href="https://res.cloudinary.com/dec78b2ft/image/upload/image-1.jpg" />
-  <!-- Prefetch the entire Image Resource Index page -->
-  <link rel="prefetch" href="imageresourceindex.html" />
+
+  <!-- We'll inject the image preload dynamically via JS -->
 
   <style>
     :root {
@@ -93,24 +90,24 @@
   <hr />
 
   <p>Projects</p>
-  <p><a href="https://www.instagram.com/tristanblackmore/?hl=en" target="_blank" rel="noopener noreferrer noopener">tristan blackmore</a></p>
-  <p><a href="https://www.instagram.com/humanizezine/?hl=en" target="_blank" rel="noopener noreferrer noopener">humanize zine</a></p>
+  <p><a href="https://www.instagram.com/tristanblackmore/?hl=en" target="_blank" rel="noopener noreferrer">tristan blackmore</a></p>
+  <p><a href="https://www.instagram.com/humanizezine/?hl=en" target="_blank" rel="noopener noreferrer">humanize zine</a></p>
   <p><a href="imageresourceindex.html">image resource index</a></p>
-  
+
   <hr />
 
   <p>Research I'm currently following</p>
   <ul class="links">
-    <li><a href="https://doughnuteconomics.org" target="_blank" rel="noopener noreferrer noopener">Doughnut Economics</a></li>
-    <li><a href="https://longnow.org" target="_blank" rel="noopener noreferrer noopener">Long Now</a></li>
-    <li><a href="https://www.c40.org" target="_blank" rel="noopener noreferrer noopener">C40 Cities</a></li>
-    <li><a href="https://www.stockholmresilience.org/" target="_blank" rel="noopener noreferrer noopener">Stockholm Resilience</a></li>
-    <li><a href="https://autonomy.work/" target="_blank" rel="noopener noreferrer noopener">Autonomy</a></li>
-    <li><a href="https://www.citiesforum.org/news/superblock-superilla-barcelona-a-city-redefined/" target="_blank" rel="noopener noreferrer noopener">Barcelona Superilla</a></li>
+    <li><a href="https://doughnuteconomics.org" target="_blank" rel="noopener noreferrer">Doughnut Economics</a></li>
+    <li><a href="https://longnow.org" target="_blank" rel="noopener noreferrer">Long Now</a></li>
+    <li><a href="https://www.c40.org" target="_blank" rel="noopener noreferrer">C40 Cities</a></li>
+    <li><a href="https://www.stockholmresilience.org/" target="_blank" rel="noopener noreferrer">Stockholm Resilience</a></li>
+    <li><a href="https://autonomy.work/" target="_blank" rel="noopener noreferrer">Autonomy</a></li>
+    <li><a href="https://www.citiesforum.org/news/superblock-superilla-barcelona-a-city-redefined/" target="_blank" rel="noopener noreferrer">Barcelona Superilla</a></li>
   </ul>
 
   <script>
-    // Color generation script unchanged
+    // Bright color hover effect for links
     const steps = ['00', '33', '66', '99', 'CC', 'FF'];
 
     function generateBrightWebSafeColors() {
@@ -118,7 +115,7 @@
       for (let r of steps) {
         for (let g of steps) {
           for (let b of steps) {
-            if (r === g && g === b) continue; // skip grayscale
+            if (r === g && g === b) continue;
             const color = `#${r}${g}${b}`;
             if (getBrightness(color) >= 150) {
               colors.push(color);
@@ -133,11 +130,7 @@
       const r = parseInt(hex.substr(1, 2), 16);
       const g = parseInt(hex.substr(3, 2), 16);
       const b = parseInt(hex.substr(5, 2), 16);
-      return Math.sqrt(
-        0.299 * (r * r) +
-        0.587 * (g * g) +
-        0.114 * (b * b)
-      );
+      return Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
     }
 
     function rgbToHue(hex) {
@@ -145,15 +138,15 @@
       const g = parseInt(hex.substr(3, 2), 16) / 255;
       const b = parseInt(hex.substr(5, 2), 16) / 255;
       const max = Math.max(r, g, b), min = Math.min(r, g, b);
-      let h;
-      if (max === min) {
-        h = 0;
-      } else if (max === r) {
-        h = (60 * ((g - b) / (max - min)) + 360) % 360;
-      } else if (max === g) {
-        h = (60 * ((b - r) / (max - min)) + 120) % 360;
-      } else {
-        h = (60 * ((r - g) / (max - min)) + 240) % 360;
+      let h = 0;
+      if (max !== min) {
+        if (max === r) {
+          h = (60 * ((g - b) / (max - min)) + 360) % 360;
+        } else if (max === g) {
+          h = (60 * ((b - r) / (max - min)) + 120) % 360;
+        } else {
+          h = (60 * ((r - g) / (max - min)) + 240) % 360;
+        }
       }
       return h;
     }
@@ -181,18 +174,39 @@
         link.style.transition = `background-color 0.75s ease, color 0.75s ease`;
         link.style.backgroundColor = '';
         link.style.color = '';
-
-        const cleanup = () => {
+        link.addEventListener('transitionend', function cleanup() {
           link.style.transition = 'none';
           link.removeEventListener('transitionend', cleanup);
-        };
-        link.addEventListener('transitionend', cleanup);
+        });
       });
     });
 
-    // Additional JS preloading fallback for first image
-    const preloadImage = new Image();
-    preloadImage.src = 'https://res.cloudinary.com/dec78b2ft/image/upload/image-1.jpg';
+    // === Image preload logic ===
+    const imageFilenames = [
+      "image-1.jpg",
+      "image-2.jpg",
+      "image-3.jpg",
+      "image-4.jpg",
+      "image-5.jpg"
+      // Add all possible images here
+    ];
+
+    const randomImage = imageFilenames[Math.floor(Math.random() * imageFilenames.length)];
+    const preloadSrc = `https://res.cloudinary.com/dec78b2ft/image/upload/${randomImage}`;
+
+    // Store the filename for the index page to use
+    localStorage.setItem('imageResourceIndexImage', randomImage);
+
+    // Preload the actual image
+    const preloadImg = new Image();
+    preloadImg.src = preloadSrc;
+
+    // OR: insert preload <link> element dynamically
+    const preloadLink = document.createElement('link');
+    preloadLink.rel = 'preload';
+    preloadLink.as = 'image';
+    preloadLink.href = preloadSrc;
+    document.head.appendChild(preloadLink);
   </script>
 </body>
 </html>
