@@ -148,7 +148,7 @@
     }
 
     // Desaturate by reducing saturation by 25%
-    function desaturateSaturation(saturationPercent, amount = 25) {
+    function desaturateSaturation(saturationPercent, amount = 35) {
       return Math.max(0, saturationPercent - amount);
     }
 
@@ -156,8 +156,8 @@
     // Saturation reduced by 25%, lightness fixed at 50
     function getColorFromIndex(idx) {
       const hue = (idx / 100) * 360;
-      const saturation = desaturateSaturation(85, 25); // from 85% to 60%
-      const lightness = 56;
+      const saturation = desaturateSaturation(85, 35); // from 85% to 60%
+      const lightness = 60;
       return hslToHex(hue, saturation, lightness);
     }
 
