@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tristan Blackmore - Gallery</title>
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-text: #000000;
+      --font-family: Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-family);
+      margin: 40px auto;
+      padding: 0 20px;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    a {
+      color: var(--color-text);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.5em;
+    }
+
+    img {
+      margin-top: 20px;
+      max-width: 100%;
+      height: auto;
+      cursor: pointer;
+      border: 2px solid #000;
+    }
+  </style>
+</head>
+<body>
+  <p><a href="index.html">Tristan Blackmore</a></p>
+
+  <img id="random-image" src="assets/images/image1.jpg" alt="Gallery Image" onclick="showRandomImage()" />
+
+  <script>
+    const imagePaths = [
+      'assets/images/image1.jpg',
+      'assets/images/image2.jpg',
+      'assets/images/image3.jpg',
+      'assets/images/image4.jpg',
+      'assets/images/image5.jpg'
+      // Add more filenames here if needed
+    ];
+
+    function showRandomImage() {
+      const img = document.getElementById('random-image');
+      let newSrc;
+      do {
+        newSrc = imagePaths[Math.floor(Math.random() * imagePaths.length)];
+      } while (img.src.includes(newSrc));
+      img.src = newSrc;
+    }
+  </script>
+</body>
+</html>
