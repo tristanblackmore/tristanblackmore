@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tristan Blackmore</title>
 
-  <!-- We'll inject the image preload dynamically via JS -->
-
   <style>
     :root {
       --color-text: #000000;
@@ -107,23 +105,30 @@
   </ul>
 
   <script>
-    // Bright color hover effect for links
     const steps = ['00', '33', '66', '99', 'CC', 'FF'];
 
-    function generateBrightWebSafeColors() {
-      const colors = [];
-      for (let r of steps) {
-        for (let g of steps) {
-          for (let b of steps) {
-            if (r === g && g === b) continue;
-            const color = `#${r}${g}${b}`;
-            if (getBrightness(color) >= 150) {
-              colors.push(color);
-            }
-          }
+    function hexToHSL(hex) {
+      const r = parseInt(hex.substr(1, 2), 16) / 255;
+      const g = parseInt(hex.substr(3, 2), 16) / 255;
+      const b = parseInt(hex.substr(5, 2), 16) / 255;
+
+      const max = Math.max(r, g, b), min = Math.min(r, g, b);
+      let h, s, l = (max + min) / 2;
+
+      if (max === min) {
+        h = s = 0; // grayscale
+      } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+          case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+          case g: h = (b - r) / d + 2; break;
+          case b: h = (r - g) / d + 4; break;
         }
+        h /= 6;
       }
-      return colors;
+
+      return { h: h * 360, s: s * 100, l: l * 100 };
     }
 
     function getBrightness(hex) {
@@ -134,24 +139,28 @@
     }
 
     function rgbToHue(hex) {
-      const r = parseInt(hex.substr(1, 2), 16) / 255;
-      const g = parseInt(hex.substr(3, 2), 16) / 255;
-      const b = parseInt(hex.substr(5, 2), 16) / 255;
-      const max = Math.max(r, g, b), min = Math.min(r, g, b);
-      let h = 0;
-      if (max !== min) {
-        if (max === r) {
-          h = (60 * ((g - b) / (max - min)) + 360) % 360;
-        } else if (max === g) {
-          h = (60 * ((b - r) / (max - min)) + 120) % 360;
-        } else {
-          h = (60 * ((r - g) / (max - min)) + 240) % 360;
-        }
-      }
+      const { h } = hexToHSL(hex);
       return h;
     }
 
-    const allBrightColors = generateBrightWebSafeColors();
+    function generateRichColors() {
+      const colors = [];
+      for (let r of steps) {
+        for (let g of steps) {
+          for (let b of steps) {
+            if (r === g && g === b) continue;
+            const hex = `#${r}${g}${b}`;
+            const { s, l } = hexToHSL(hex);
+            if (s >= 70 && l >= 30 && l <= 60) {
+              colors.push(hex);
+            }
+          }
+        }
+      }
+      return colors;
+    }
+
+    const allRichColors = generateRichColors();
     let lastHue = null;
 
     document.querySelectorAll('a').forEach(link => {
@@ -160,7 +169,7 @@
 
         let newColor, newHue;
         do {
-          newColor = allBrightColors[Math.floor(Math.random() * allBrightColors.length)];
+          newColor = allRichColors[Math.floor(Math.random() * allRichColors.length)];
           newHue = rgbToHue(newColor);
         } while (lastHue !== null && Math.abs(newHue - lastHue) < 100);
         lastHue = newHue;
@@ -188,20 +197,15 @@
       "image-3.jpg",
       "image-4.jpg",
       "image-5.jpg"
-      // Add all possible images here
     ];
 
     const randomImage = imageFilenames[Math.floor(Math.random() * imageFilenames.length)];
     const preloadSrc = `https://res.cloudinary.com/dec78b2ft/image/upload/${randomImage}`;
-
-    // Store the filename for the index page to use
     localStorage.setItem('imageResourceIndexImage', randomImage);
 
-    // Preload the actual image
     const preloadImg = new Image();
     preloadImg.src = preloadSrc;
 
-    // OR: insert preload <link> element dynamically
     const preloadLink = document.createElement('link');
     preloadLink.rel = 'preload';
     preloadLink.as = 'image';
