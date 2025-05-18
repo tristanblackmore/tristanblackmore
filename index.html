@@ -104,11 +104,7 @@
   </ul>
 
   <script>
-    // Global color index for linear progression (0-100)
-    let colorIndex = Math.floor(Math.random() * 101); // Random start on first hover
-    const step = 5; // Increment step
-
-    // Convert HSL to HEX
+    // Helper function: HSL to HEX
     function hslToHex(h, s, l) {
       h /= 360;
       s /= 100;
@@ -143,7 +139,7 @@
       return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
     }
 
-    // Calculate brightness for contrast decision
+    // Brightness calculation for contrast
     function getBrightness(hex) {
       const r = parseInt(hex.substr(1, 2), 16);
       const g = parseInt(hex.substr(3, 2), 16);
@@ -151,32 +147,43 @@
       return Math.sqrt(0.299 * r * r + 0.587 * g * g + 0.114 * b * b);
     }
 
-    // Map colorIndex (0-100) to a full HSL hue 0-360 deg, with fixed saturation and lightness for vibrancy
+    // Desaturate by reducing saturation by 25%
+    function desaturateSaturation(saturationPercent, amount = 25) {
+      return Math.max(0, saturationPercent - amount);
+    }
+
+    // Get color from index (0-100), mapped to hue 0-360
+    // Saturation reduced by 25%, lightness fixed at 50
     function getColorFromIndex(idx) {
       const hue = (idx / 100) * 360;
-      const saturation = 64;
-      const lightness = 56;
+      const saturation = desaturateSaturation(85, 25); // from 85% to 60%
+      const lightness = 50;
       return hslToHex(hue, saturation, lightness);
     }
 
+    // Pick random initial color index, excluding purple/magenta range (72 to 89)
+    function getRandomColorIndexExcludingPurple() {
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * 101);
+      } while (idx >= 72 && idx <= 89);
+      return idx;
+    }
+
+    let colorIndex = getRandomColorIndexExcludingPurple();
+    const step = 5;
+
     document.querySelectorAll('a').forEach(link => {
       link.addEventListener('mouseenter', () => {
-        // Instant highlight on hover (remove CSS transition)
         link.style.transition = 'none';
-
-        // Get color for current index, then increment index with wraparound
         const bgColor = getColorFromIndex(colorIndex);
         colorIndex = (colorIndex + step) % 101;
-
         link.style.backgroundColor = bgColor;
-
-        // Contrast text color black/white
         const brightness = getBrightness(bgColor);
         link.style.color = brightness < 130 ? '#fff' : '#000';
       });
 
       link.addEventListener('mouseleave', () => {
-        // Restore fade-out transition
         link.style.transition = `background-color var(--fade-duration) ease, color var(--fade-duration) ease`;
         link.style.backgroundColor = '';
         link.style.color = '';
