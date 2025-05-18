@@ -104,6 +104,12 @@
   </ul>
 
   <script>
+    // Preload first image for faster initial load on image resource index page
+    const preloadImage = new Image();
+    preloadImage.src = 'https://res.cloudinary.com/dec78b2ft/image/upload/image-1.jpg';
+  </script>
+
+  <script>
     const steps = ['00', '33', '66', '99', 'CC', 'FF'];
 
     function generateBrightWebSafeColors() {
