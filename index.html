@@ -55,7 +55,8 @@
       padding: 0.2em 0.4em;
       border-radius: var(--border-radius);
       cursor: pointer;
-      transition: none;
+      transition: background-color var(--fade-duration) ease;
+      /* text color stays static by default */
     }
 
     hr {
@@ -149,7 +150,7 @@
       return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
     }
 
-    // Brightness calculation (for text color contrast)
+    // Calculate brightness for contrast (YIQ or luminance-based)
     function getBrightness(hex) {
       const r = parseInt(hex.substr(1, 2), 16);
       const g = parseInt(hex.substr(3, 2), 16);
@@ -163,9 +164,8 @@
       for (let base of palette) {
         for (let i = 0; i < 3; i++) {
           const l = 40 + i * 5; // Lightness: 40%, 45%, 50%
-          const s = 85;         // Saturation fixed
-          // Slight hue jitter ±3°
-          const h = base.h + (Math.random() * 6 - 3);
+          const s = 85;
+          const h = base.h + (Math.random() * 6 - 3); // jitter ±3°
           colors.push(hslToHex(h, s, l));
         }
       }
@@ -174,10 +174,9 @@
 
     const allBrightColors = generateCuratedPalette();
 
-    // To reduce hue similarity between consecutive hovers
     let lastHue = null;
 
-    // Extract hue from hex
+    // Extract hue from hex for avoiding repeats
     function hexToHue(hex) {
       const r = parseInt(hex.substr(1, 2), 16) / 255;
       const g = parseInt(hex.substr(3, 2), 16) / 255;
@@ -198,26 +197,25 @@
 
     document.querySelectorAll('a').forEach(link => {
       link.addEventListener('mouseenter', () => {
-        link.style.transition = 'none';
-
         let newColor, newHue;
         do {
           newColor = allBrightColors[Math.floor(Math.random() * allBrightColors.length)];
           newHue = hexToHue(newColor);
-        } while (lastHue !== null && Math.abs(newHue - lastHue) < 40); 
-        // reduced from 100° to 40° for subtlety with fewer hues
-
+        } while (lastHue !== null && Math.abs(newHue - lastHue) < 40);
         lastHue = newHue;
 
+        // Set background highlight color
+        link.style.backgroundColor = newColor;
+
+        // Set text color for contrast (black or white)
         const brightness = getBrightness(newColor);
-        link.style.color = newColor;
-        link.style.backgroundColor = brightness < 130 ? '#f6f6f6' : '#1a1a1a';
+        link.style.color = brightness < 130 ? '#ffffff' : '#000000';
       });
 
       link.addEventListener('mouseleave', () => {
-        link.style.transition = `color var(--fade-duration) ease, background-color var(--fade-duration) ease`;
-        link.style.color = '';
+        link.style.transition = `background-color var(--fade-duration) ease, color var(--fade-duration) ease`;
         link.style.backgroundColor = '';
+        link.style.color = '';
       });
     });
   </script>
