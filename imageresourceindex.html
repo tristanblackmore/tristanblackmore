@@ -58,7 +58,7 @@
   <p><a href="/">Tristan Blackmore</a></p>
 
   <!-- Random image viewer -->
-  <img id="gallery-image" src="https://res.cloudinary.com/dec78b2ft/image/upload/image-1.jpg" alt="Gallery Image" />
+  <img id="gallery-image" src="" alt="Gallery Image" />
 
   <script>
     const imageCount = 719; // Total number of images in Cloudinary
@@ -77,6 +77,9 @@
 
       return newUrl;
     }
+
+    // Set a random initial image on page load
+    galleryImage.src = getRandomImage(null);
 
     galleryImage.addEventListener('click', () => {
       const currentSrc = galleryImage.getAttribute('src');
