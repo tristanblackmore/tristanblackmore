@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tristan Blackmore</title>
+  
+  <!-- Preload first image in Image Resource Index to reduce lag -->
+  <link rel="preload" as="image" href="https://res.cloudinary.com/dec78b2ft/image/upload/image-1.jpg" />
+  <!-- Prefetch the entire Image Resource Index page -->
+  <link rel="prefetch" href="imageresourceindex.html" />
+
   <style>
     :root {
       --color-text: #000000;
@@ -104,12 +110,7 @@
   </ul>
 
   <script>
-    // Preload first image for faster initial load on image resource index page
-    const preloadImage = new Image();
-    preloadImage.src = 'https://res.cloudinary.com/dec78b2ft/image/upload/image-1.jpg';
-  </script>
-
-  <script>
+    // Color generation script unchanged
     const steps = ['00', '33', '66', '99', 'CC', 'FF'];
 
     function generateBrightWebSafeColors() {
@@ -188,6 +189,10 @@
         link.addEventListener('transitionend', cleanup);
       });
     });
+
+    // Additional JS preloading fallback for first image
+    const preloadImage = new Image();
+    preloadImage.src = 'https://res.cloudinary.com/dec78b2ft/image/upload/image-1.jpg';
   </script>
 </body>
 </html>
