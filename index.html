@@ -104,16 +104,15 @@
 
   <script>
     const hueStops = [
-      { start: 350, end: 360, sat: 60, light: 50 },  // Maroon
-      { start: 0,   end: 15,  sat: 60, light: 50 },  // Red
-      { start: 15,  end: 45,  sat: 60, light: 50 },  // Orange
-      { start: 45,  end: 65,  sat: 60, light: 50 },  // Yellow
-      { start: 65,  end: 150, sat: 60, light: 50 },  // Green
-      { start: 150, end: 225, sat: 60, light: 50 },  // Blue
-      { start: 226, end: 235, sat: 35, light: 40 },  // Grape (desaturated)
-      { start: 236, end: 245, sat: 35, light: 40 },  // Plum (desaturated)
-      { start: 246, end: 255, sat: 35, light: 40 },  // Merlot (desaturated)
-      { start: 256, end: 265, sat: 60, light: 50 },  // Maroon reconnect
+      { start: 350, end: 360, sat: 50, light: 50 },  // Maroon
+      { start: 0,   end: 15,  sat: 50, light: 50 },  // Red
+      { start: 15,  end: 45,  sat: 50, light: 50 },  // Orange
+      { start: 45,  end: 65,  sat: 50, light: 50 },  // Yellow
+      { start: 65,  end: 150, sat: 50, light: 50 },  // Green
+      { start: 150, end: 225, sat: 50, light: 50 },  // Blue
+      { start: 226, end: 235, sat: 25, light: 40 },  // Grape (desaturated)
+      { start: 236, end: 245, sat: 25, light: 40 },  // Plum (desaturated)
+      { start: 246, end: 255, sat: 25, light: 40 },  // Merlot (desaturated)
     ];
 
     const totalSpan = hueStops.reduce((sum, band) => sum + (band.end - band.start), 0);
@@ -133,7 +132,7 @@
         }
         acc += range;
       }
-      return { hue: 0, sat: 60, light: 50 }; // Fallback
+      return { hue: 0, sat: 50, light: 50 };
     }
 
     function hslToHex(h, s, l) {
