@@ -103,29 +103,37 @@
   </ul>
 
   <script>
-    // Ranges that avoid purples
-    const safeHueRanges = [
-      [345, 360],  // Maroon / deep red
-      [0, 15],     // Red
-      [15, 45],    // Orange
-      [45, 65],    // Yellow
-      [65, 150],   // Green
-      [150, 240],  // Blue
+    const hueStops = [
+      { start: 350, end: 360, sat: 60, light: 50 },  // Maroon
+      { start: 0,   end: 15,  sat: 60, light: 50 },  // Red
+      { start: 15,  end: 45,  sat: 60, light: 50 },  // Orange
+      { start: 45,  end: 65,  sat: 60, light: 50 },  // Yellow
+      { start: 65,  end: 150, sat: 60, light: 50 },  // Green
+      { start: 150, end: 225, sat: 60, light: 50 },  // Blue
+      { start: 226, end: 235, sat: 35, light: 40 },  // Grape (desaturated)
+      { start: 236, end: 245, sat: 35, light: 40 },  // Plum (desaturated)
+      { start: 246, end: 255, sat: 35, light: 40 },  // Merlot (desaturated)
+      { start: 256, end: 265, sat: 60, light: 50 },  // Maroon reconnect
     ];
 
-    const totalRange = safeHueRanges.reduce((sum, [start, end]) => sum + (end - start), 0);
+    const totalSpan = hueStops.reduce((sum, band) => sum + (band.end - band.start), 0);
 
-    function getSafeHue(index) {
-      const scaledIndex = (index / 100) * totalRange;
-      let cumulative = 0;
-      for (const [start, end] of safeHueRanges) {
-        const length = end - start;
-        if (scaledIndex < cumulative + length) {
-          return start + (scaledIndex - cumulative);
+    function getHueData(index) {
+      const position = (index / 100) * totalSpan;
+      let acc = 0;
+      for (const band of hueStops) {
+        const range = band.end - band.start;
+        if (position < acc + range) {
+          const rel = position - acc;
+          return {
+            hue: band.start + rel,
+            sat: band.sat,
+            light: band.light,
+          };
         }
-        cumulative += length;
+        acc += range;
       }
-      return 0;
+      return { hue: 0, sat: 60, light: 50 }; // Fallback
     }
 
     function hslToHex(h, s, l) {
@@ -164,11 +172,9 @@
       return Math.sqrt(0.299 * r * r + 0.587 * g * g + 0.114 * b * b);
     }
 
-    function getColorFromIndex(idx) {
-      const hue = getSafeHue(idx);
-      const saturation = 60;
-      const lightness = 50;
-      return hslToHex(hue, saturation, lightness);
+    function getColor(index) {
+      const { hue, sat, light } = getHueData(index);
+      return hslToHex(hue, sat, light);
     }
 
     let colorIndex = Math.floor(Math.random() * 101);
@@ -177,11 +183,10 @@
     document.querySelectorAll('a').forEach(link => {
       link.addEventListener('mouseenter', () => {
         link.style.transition = 'none';
-        const bgColor = getColorFromIndex(colorIndex);
+        const bgColor = getColor(colorIndex);
         colorIndex = (colorIndex + step) % 101;
         link.style.backgroundColor = bgColor;
-        const brightness = getBrightness(bgColor);
-        link.style.color = brightness < 130 ? '#fff' : '#000';
+        link.style.color = getBrightness(bgColor) < 130 ? '#fff' : '#000';
       });
 
       link.addEventListener('mouseleave', () => {
