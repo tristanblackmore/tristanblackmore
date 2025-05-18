@@ -1,23 +1,24 @@
 import os
-import json
 
-# Set the folder where your images live
-image_folder = "assets/images"
+# Your GitHub repo info
+github_user = "yourusername"
+github_repo = "yourrepo"
+branch = "main"  # or 'master' or whatever your branch is
+folder_path = "assets/images"  # local folder path relative to script
+github_folder_path = "assets/images"  # path inside repo
 
-# Valid image file extensions
-valid_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
+def generate_github_image_list():
+    files = os.listdir(folder_path)
+    images = [f for f in files if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp'))]
+    urls = [
+        f'https://raw.githubusercontent.com/{github_user}/{github_repo}/{branch}/{github_folder_path}/{img}'
+        for img in images
+    ]
 
-# List all image files
-image_files = [
-    filename for filename in os.listdir(image_folder)
-    if os.path.splitext(filename)[1].lower() in valid_extensions
-]
+    # Format as JS array string
+    js_array = "[\n  " + ",\n  ".join(f'"{url}"' for url in urls) + "\n]"
+    return js_array
 
-# Output path
-output_path = os.path.join("assets", "imageList.json")
-
-# Save the list
-with open(output_path, 'w') as json_file:
-    json.dump(image_files, json_file, indent=2)
-
-print(f"✅ Found {len(image_files)} image(s). Saved to {output_path}")
+if __name__ == "__main__":
+    print("Copy this JS array and paste it into your website code:")
+    print(generate_github_image_list())
