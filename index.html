@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tristan Blackmore</title>
-
   <style>
     :root {
       --color-text: #000;
@@ -33,6 +32,7 @@
     p {
       margin: var(--spacing-base) 0;
     }
+
     p:first-of-type {
       margin-bottom: var(--spacing-large);
     }
@@ -103,30 +103,29 @@
   </ul>
 
   <script>
-    // Map index 0–100 to safe hue ranges
+    // Ranges that avoid purples
+    const safeHueRanges = [
+      [345, 360],  // Maroon / deep red
+      [0, 15],     // Red
+      [15, 45],    // Orange
+      [45, 65],    // Yellow
+      [65, 150],   // Green
+      [150, 240],  // Blue
+    ];
+
+    const totalRange = safeHueRanges.reduce((sum, [start, end]) => sum + (end - start), 0);
+
     function getSafeHue(index) {
-      const safeHueRanges = [
-        [345, 360],  // Deep red to maroon
-        [0, 15],     // Red
-        [15, 45],    // Orange
-        [45, 65],    // Yellow
-        [65, 150],   // Green
-        [150, 240],  // Cyan/Teal/Blue
-        [240, 285],  // Blue to Reddish-Amaranth
-      ];
-
-      const totalRange = safeHueRanges.reduce((sum, [start, end]) => sum + (end - start), 0);
       const scaledIndex = (index / 100) * totalRange;
-
       let cumulative = 0;
       for (const [start, end] of safeHueRanges) {
-        const segmentLength = end - start;
-        if (scaledIndex < cumulative + segmentLength) {
+        const length = end - start;
+        if (scaledIndex < cumulative + length) {
           return start + (scaledIndex - cumulative);
         }
-        cumulative += segmentLength;
+        cumulative += length;
       }
-      return 0; // fallback
+      return 0;
     }
 
     function hslToHex(h, s, l) {
@@ -167,7 +166,7 @@
 
     function getColorFromIndex(idx) {
       const hue = getSafeHue(idx);
-      const saturation = 60; // desaturated by ~25%
+      const saturation = 60;
       const lightness = 50;
       return hslToHex(hue, saturation, lightness);
     }
@@ -192,6 +191,5 @@
       });
     });
   </script>
-
 </body>
 </html>
