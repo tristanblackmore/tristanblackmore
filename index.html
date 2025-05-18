@@ -12,7 +12,7 @@
       --spacing-base: 0.4em;
       --spacing-large: 1.4em;
       --border-radius: 2px;
-      --fade-duration: 0.75s; /* fade duration */
+      --fade-duration: 0.75s;
       --hr-color: #ccc;
       --max-content-width: 600px;
       --font-family: Helvetica, Arial, sans-serif;
@@ -56,7 +56,6 @@
       border-radius: var(--border-radius);
       cursor: pointer;
       will-change: background-color, color;
-      /* No default transition */
       transition: none;
     }
 
@@ -124,49 +123,74 @@
       const r = parseInt(hex.substr(1, 2), 16);
       const g = parseInt(hex.substr(3, 2), 16);
       const b = parseInt(hex.substr(5, 2), 16);
-      return Math.sqrt(
-        0.299 * (r * r) +
-        0.587 * (g * g) +
-        0.114 * (b * b)
-      );
+      return Math.sqrt(0.299 * r * r + 0.587 * g * g + 0.114 * b * b);
+    }
+
+    function hexToHsl(hex) {
+      const r = parseInt(hex.substr(1, 2), 16) / 255;
+      const g = parseInt(hex.substr(3, 2), 16) / 255;
+      const b = parseInt(hex.substr(5, 2), 16) / 255;
+
+      const max = Math.max(r, g, b), min = Math.min(r, g, b);
+      let h, s, l = (max + min) / 2;
+
+      if (max === min) {
+        h = s = 0;
+      } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+          case r: h = ((g - b) / d + (g < b ? 6 : 0)); break;
+          case g: h = ((b - r) / d + 2); break;
+          case b: h = ((r - g) / d + 4); break;
+        }
+        h /= 6;
+      }
+      return { h: h * 360, s, l };
+    }
+
+    function hueDistance(h1, h2) {
+      const d = Math.abs(h1 - h2);
+      return Math.min(d, 360 - d);
     }
 
     const allColors = generateWebSafeColors();
     const brightColors = allColors.filter(c => getBrightness(c) >= 150);
 
-    document.querySelectorAll('a').forEach(link => {
-      let lastColor = null;
+    let lastHue = null;
 
+    document.querySelectorAll('a').forEach(link => {
       link.addEventListener('mouseenter', () => {
-        // Disable transition to pop color instantly
         link.style.transition = 'none';
 
-        let newColor;
+        let selectedColor, attempts = 0;
         do {
-          newColor = brightColors[Math.floor(Math.random() * brightColors.length)];
-        } while (newColor === lastColor);
-        lastColor = newColor;
+          selectedColor = brightColors[Math.floor(Math.random() * brightColors.length)];
+          const hsl = hexToHsl(selectedColor);
+          const hue = hsl.h;
 
-        link.style.backgroundColor = newColor;
+          if (lastHue === null || hueDistance(hue, lastHue) >= 100 || attempts > 20) {
+            lastHue = hue;
+            break;
+          }
 
-        const brightness = getBrightness(newColor);
+          attempts++;
+        } while (true);
+
+        link.style.backgroundColor = selectedColor;
+        const brightness = getBrightness(selectedColor);
         link.style.color = brightness > 180 ? '#000' : '#fff';
       });
 
       link.addEventListener('mouseleave', () => {
-        // Enable transition on leave to fade out
-        link.style.transition = `background-color 0.75s ease, color 0.75s ease`;
-
-        // Reset colors to default, triggering fade-out transition
+        link.style.transition = 'background-color 0.75s ease, color 0.75s ease';
         link.style.backgroundColor = '';
         link.style.color = '';
-
-        // After transition ends, remove inline transition style for next hover
-        const cleanupTransition = () => {
+        const cleanup = () => {
           link.style.transition = 'none';
-          link.removeEventListener('transitionend', cleanupTransition);
+          link.removeEventListener('transitionend', cleanup);
         };
-        link.addEventListener('transitionend', cleanupTransition);
+        link.addEventListener('transitionend', cleanup);
       });
     });
   </script>
