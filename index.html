@@ -154,8 +154,8 @@
     // Map colorIndex (0-100) to a full HSL hue 0-360 deg, with fixed saturation and lightness for vibrancy
     function getColorFromIndex(idx) {
       const hue = (idx / 100) * 360;
-      const saturation = 85;
-      const lightness = 50;
+      const saturation = 64;
+      const lightness = 56;
       return hslToHex(hue, saturation, lightness);
     }
 
