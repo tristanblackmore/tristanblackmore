@@ -54,34 +54,34 @@
 </head>
 <body>
 
-  <!-- Header / site title -->
   <p><a href="/">Tristan Blackmore</a></p>
-
-  <!-- Random image viewer -->
-  <img id="gallery-image" src="https://res.cloudinary.com/dec78b2ft/image/upload/imageresourceindex/a%20(1).jpg" alt="Gallery Image" />
+  <img id="gallery-image" src="" alt="Gallery Image" />
 
   <script>
-    const imageCount = 719;
-    const cloudinaryBase = 'https://res.cloudinary.com/dec78b2ft/image/upload/imageresourceindex/';
-    const images = [];
-
-    for (let i = 1; i <= imageCount; i++) {
-      images.push(`${cloudinaryBase}a%20(${i}).jpg`);
-    }
+    const cloudName = 'dec78b2ft';
+    const folder = 'imageresourceindex';
+    const totalImages = 719;
 
     const galleryImage = document.getElementById('gallery-image');
 
-    function getRandomImage(currentSrc) {
-      let newImage;
+    function getRandomImageUrl(currentSrc) {
+      let newIndex;
+      let newUrl;
       do {
-        newImage = images[Math.floor(Math.random() * images.length)];
-      } while (newImage === currentSrc);
-      return newImage;
+        newIndex = Math.floor(Math.random() * totalImages) + 1; // 1 to 719
+        newUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${folder}/image-${newIndex}.jpg`;
+      } while (newUrl === currentSrc);
+      return newUrl;
     }
 
+    // Set initial image
+    const initialImage = getRandomImageUrl('');
+    galleryImage.setAttribute('src', initialImage);
+
+    // Change on click
     galleryImage.addEventListener('click', () => {
       const currentSrc = galleryImage.getAttribute('src');
-      const nextImage = getRandomImage(currentSrc);
+      const nextImage = getRandomImageUrl(currentSrc);
       galleryImage.setAttribute('src', nextImage);
     });
   </script>
