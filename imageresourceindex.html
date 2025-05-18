@@ -57,19 +57,18 @@
 <body>
 
   <!-- Header / site title -->
-<p><a href="/">Tristan Blackmore</a></p>
+  <p><a href="/">Tristan Blackmore</a></p>
   
   <!-- Random image viewer -->
   <img id="gallery-image" src="assets/images/a (1).jpg" alt="Gallery Image" />
 
   <script>
-    const images = [
-      'assets/images/a (1).jpg',
-      'assets/images/a (2).jpg',
-      'assets/images/a (3).jpg',
-      'assets/images/a (4).jpg',
-      'assets/images/a (5).jpg'
-    ];
+    const imageCount = 600; // adjust as you add more images
+    const images = [];
+
+    for (let i = 1; i <= imageCount; i++) {
+      images.push(`assets/images/a (${i}).jpg`);
+    }
 
     const galleryImage = document.getElementById('gallery-image');
 
