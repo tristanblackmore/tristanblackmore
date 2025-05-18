@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tristan Blackmore</title>
-
   <style>
     :root {
       --color-text: #000000;
@@ -55,7 +54,6 @@
       padding: 0.2em 0.4em;
       border-radius: var(--border-radius);
       cursor: pointer;
-      will-change: background-color, color;
       transition: none;
     }
 
@@ -91,7 +89,8 @@
   <p>Projects</p>
   <p><a href="https://www.instagram.com/tristanblackmore/?hl=en" target="_blank" rel="noopener noreferrer noopener">tristan blackmore</a></p>
   <p><a href="https://www.instagram.com/humanizezine/?hl=en" target="_blank" rel="noopener noreferrer noopener">humanize zine</a></p>
-
+  <p><a href="https://www.instagram.com/humanizezine/?hl=en" target="_blank" rel="noopener noreferrer noopener">image resource index</a></p>
+  
   <hr />
 
   <p>Research I'm currently following</p>
@@ -107,12 +106,16 @@
   <script>
     const steps = ['00', '33', '66', '99', 'CC', 'FF'];
 
-    function generateWebSafeColors() {
+    function generateBrightWebSafeColors() {
       const colors = [];
       for (let r of steps) {
         for (let g of steps) {
           for (let b of steps) {
-            colors.push(`#${r}${g}${b}`);
+            if (r === g && g === b) continue; // skip grayscale
+            const color = `#${r}${g}${b}`;
+            if (getBrightness(color) >= 150) {
+              colors.push(color);
+            }
           }
         }
       }
@@ -123,69 +126,55 @@
       const r = parseInt(hex.substr(1, 2), 16);
       const g = parseInt(hex.substr(3, 2), 16);
       const b = parseInt(hex.substr(5, 2), 16);
-      return Math.sqrt(0.299 * r * r + 0.587 * g * g + 0.114 * b * b);
+      return Math.sqrt(
+        0.299 * (r * r) +
+        0.587 * (g * g) +
+        0.114 * (b * b)
+      );
     }
 
-    function hexToHsl(hex) {
+    function rgbToHue(hex) {
       const r = parseInt(hex.substr(1, 2), 16) / 255;
       const g = parseInt(hex.substr(3, 2), 16) / 255;
       const b = parseInt(hex.substr(5, 2), 16) / 255;
-
       const max = Math.max(r, g, b), min = Math.min(r, g, b);
-      let h, s, l = (max + min) / 2;
-
+      let h;
       if (max === min) {
-        h = s = 0;
+        h = 0;
+      } else if (max === r) {
+        h = (60 * ((g - b) / (max - min)) + 360) % 360;
+      } else if (max === g) {
+        h = (60 * ((b - r) / (max - min)) + 120) % 360;
       } else {
-        const d = max - min;
-        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-        switch (max) {
-          case r: h = ((g - b) / d + (g < b ? 6 : 0)); break;
-          case g: h = ((b - r) / d + 2); break;
-          case b: h = ((r - g) / d + 4); break;
-        }
-        h /= 6;
+        h = (60 * ((r - g) / (max - min)) + 240) % 360;
       }
-      return { h: h * 360, s, l };
+      return h;
     }
 
-    function hueDistance(h1, h2) {
-      const d = Math.abs(h1 - h2);
-      return Math.min(d, 360 - d);
-    }
-
-    const allColors = generateWebSafeColors();
-    const brightColors = allColors.filter(c => getBrightness(c) >= 150);
-
+    const allBrightColors = generateBrightWebSafeColors();
     let lastHue = null;
 
     document.querySelectorAll('a').forEach(link => {
       link.addEventListener('mouseenter', () => {
         link.style.transition = 'none';
 
-        let selectedColor, attempts = 0;
+        let newColor, newHue;
         do {
-          selectedColor = brightColors[Math.floor(Math.random() * brightColors.length)];
-          const hsl = hexToHsl(selectedColor);
-          const hue = hsl.h;
+          newColor = allBrightColors[Math.floor(Math.random() * allBrightColors.length)];
+          newHue = rgbToHue(newColor);
+        } while (lastHue !== null && Math.abs(newHue - lastHue) < 100);
+        lastHue = newHue;
 
-          if (lastHue === null || hueDistance(hue, lastHue) >= 100 || attempts > 20) {
-            lastHue = hue;
-            break;
-          }
-
-          attempts++;
-        } while (true);
-
-        link.style.backgroundColor = selectedColor;
-        const brightness = getBrightness(selectedColor);
+        const brightness = getBrightness(newColor);
+        link.style.backgroundColor = newColor;
         link.style.color = brightness > 180 ? '#000' : '#fff';
       });
 
       link.addEventListener('mouseleave', () => {
-        link.style.transition = 'background-color 0.75s ease, color 0.75s ease';
+        link.style.transition = `background-color 0.75s ease, color 0.75s ease`;
         link.style.backgroundColor = '';
         link.style.color = '';
+
         const cleanup = () => {
           link.style.transition = 'none';
           link.removeEventListener('transitionend', cleanup);
