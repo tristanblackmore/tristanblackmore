@@ -5,42 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Image Resource Index</title>
   <link rel="stylesheet" href="style.css" />
-  
+
   <style>
-    /* Make the title link look like plain text with no underline */
+    /* Title link styled like plain text (no underline, color inherit) */
     p.title-link-container a {
       text-decoration: none;
       font-weight: normal;
-      color: inherit; /* inherit from parent, likely black */
+      color: inherit;
       cursor: pointer;
     }
 
-    /* On hover, subtle color change for UX */
     p.title-link-container a:hover {
       color: #444;
       text-decoration: none;
     }
 
-    /* Gallery container aligns to same max width and margins as body content */
+    /* Container for gallery image matches main content max-width & centered */
     .gallery-container {
-      max-width: var(--max-content-width); /* from your CSS */
-      margin: 0 auto 2rem auto; /* center horizontally with some bottom margin */
+      max-width: var(--max-content-width); /* Use your global max width variable */
+      margin: 0 auto 2rem auto; /* center horizontally + bottom margin */
       padding: 0;
-      /* optional: add a border or shadow if you want image to stand out */
     }
 
-    /* Make the image block fill the container width but keep aspect ratio */
+    /* Gallery image fills container width, keeps aspect ratio */
     #gallery-image {
       width: 100%;
       height: auto;
       display: block;
-      margin: 0; /* no extra margin */
+      margin: 0;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    /* Optional: margin on title to match main page */
+    p.title-link-container {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 2rem; /* adjust if main page uses a different size */
+      font-weight: bold;
+      text-align: left; /* match main page alignment */
     }
   </style>
 </head>
 <body>
 
-  <!-- Title as link, styled to look like plain text -->
+  <!-- Title as a link, styled to look like plain text -->
   <p class="title-link-container">
     <a href="/" aria-label="Go to main page">Tristan Blackmore</a>
   </p>
@@ -84,6 +93,6 @@
       galleryImage.setAttribute('src', nextImage);
     });
   </script>
-  
+
 </body>
 </html>
