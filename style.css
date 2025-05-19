@@ -73,7 +73,6 @@ hr {
 .title-link {
   color: var(--color-text);          /* Always use default text color (black) */
   text-decoration: none;             /* Remove underline */
-  font-weight: bold;                 /* Optional: make it stand out as a title */
   cursor: pointer;                   /* Still indicates clickability */
 }
 
