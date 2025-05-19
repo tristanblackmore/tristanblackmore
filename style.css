@@ -128,3 +128,16 @@ hr {
     transition: none !important;
   }
 }
+
+/* Fix main title indentation */
+p.title-link-container {
+  margin-left: 0;
+  padding-left: 0;
+  text-indent: 0;
+}
+
+p.title-link-container > a.title-link {
+  padding-left: 0;
+  margin-left: 0;
+  display: inline;
+}
