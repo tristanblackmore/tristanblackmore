@@ -5,10 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Image Resource Index</title>
   <link rel="stylesheet" href="style.css" />
+  
+  <style>
+    /* Make the title link look like plain text with no underline */
+    p.title-link-container a {
+      text-decoration: none;
+      font-weight: normal;
+      color: inherit; /* inherit from parent, likely black */
+      cursor: pointer;
+    }
+
+    /* On hover, subtle color change for UX */
+    p.title-link-container a:hover {
+      color: #444;
+      text-decoration: none;
+    }
+
+    /* Gallery container aligns to same max width and margins as body content */
+    .gallery-container {
+      max-width: var(--max-content-width); /* from your CSS */
+      margin: 0 auto 2rem auto; /* center horizontally with some bottom margin */
+      padding: 0;
+      /* optional: add a border or shadow if you want image to stand out */
+    }
+
+    /* Make the image block fill the container width but keep aspect ratio */
+    #gallery-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0; /* no extra margin */
+    }
+  </style>
 </head>
 <body>
 
-  <p><a href="/" class="title-link">Tristan Blackmore</a></p>
+  <!-- Title as link, styled to look like plain text -->
+  <p class="title-link-container">
+    <a href="/" aria-label="Go to main page">Tristan Blackmore</a>
+  </p>
 
   <div class="gallery-container">
     <img id="gallery-image" src="" alt="Gallery Image" />
