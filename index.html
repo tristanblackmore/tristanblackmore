@@ -6,39 +6,51 @@
   <title>Tristan Blackmore</title>
   <style>
     :root {
-      --color-text: #000;
-      --color-bg: #fff;
+      --color-text: #000000;
+      --color-bg: #ffffff;
       --spacing-base: 0.4em;
       --spacing-large: 1.4em;
-      --border-radius: 2px;
-      --fade-duration: 0.75s;
-      --hr-color: #ccc;
-      --max-content-width: 600px;
       --font-family: Helvetica, Arial, sans-serif;
       --font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
       --line-height: 1.5;
       --font-weight: normal;
+      --max-content-width: 600px;
+      --border-radius: 2px;
+      --fade-duration: 0.75s;
+      --hr-color: #ccc;
     }
 
-    /* Apply same typography style to all text elements */
-    body, p, a, li {
+    /* Global box-sizing for consistency */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
       font-family: var(--font-family);
       font-size: var(--font-size);
       line-height: var(--line-height);
       font-weight: var(--font-weight);
       color: var(--color-text);
-      margin: var(--spacing-base) 0;
+      background-color: var(--color-bg);
+
+      max-width: var(--max-content-width);
+      margin: 40px auto;
+      padding: 0 20px;
     }
 
-    /* Remove extra margin for the first paragraph */
+    /* Make every text element consistent with body style and spacing */
+    body, p, a, li {
+      margin-top: var(--spacing-base);
+      margin-bottom: var(--spacing-base);
+    }
+
     p:first-of-type {
       margin-top: 0;
       margin-bottom: var(--spacing-large);
     }
 
-    /* Remove list padding and bullet points, keep margin consistent */
     ul.links {
-      margin: 0;
+      margin: 0 0 var(--spacing-large) 0;
       padding-left: 0;
       list-style: none;
     }
@@ -47,17 +59,15 @@
       margin: var(--spacing-base) 0;
     }
 
-    /* Links styling */
     a {
+      color: var(--color-text);
       text-decoration: underline;
       padding: 0.2em 0.4em;
       border-radius: var(--border-radius);
       cursor: pointer;
       transition: background-color var(--fade-duration) ease, color var(--fade-duration) ease;
-      display: inline; /* Ensure no block or inline-block */
     }
 
-    /* HR styling */
     hr {
       border: none;
       border-top: 1px solid var(--hr-color);
