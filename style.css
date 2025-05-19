@@ -1,3 +1,5 @@
+/* style.css */
+
 :root {
   --color-text: #000;
   --color-bg: #fff;
@@ -10,56 +12,57 @@
   --font-family: Helvetica, Arial, sans-serif;
 }
 
-/* --- Shared Body Styles --- */
+/* Page content wrapper for consistent margins/padding */
+/* Use this on essay page or anywhere you want consistent horizontal spacing */
+.page-content {
+  max-width: var(--max-content-width);
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
 body {
   font-family: var(--font-family);
+  /* Removed max-width, margin and padding from body to avoid conflict
+     We want these controlled by .page-content for more flexibility */
+  /* max-width: var(--max-content-width); */
+  /* margin: 40px auto; */
+  /* padding: 0 20px; */
   line-height: 1.5;
   font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
   font-weight: normal;
   background-color: var(--color-bg);
   color: var(--color-text);
-  margin: 0;
-  padding: 0;
-}
-
-/* --- Non-Main Pages Layout --- */
-body:not(.main-page) .page-content {
-  max-width: var(--max-content-width);
-  margin: 40px auto;
-  padding: 0 20px;
-}
-
-/* --- Main Page Layout --- */
-body.main-page .page-content {
-  max-width: var(--max-content-width);
-  margin: 40px auto;
-  padding: 0 20px;
 }
 
 p {
   margin: var(--spacing-base) 0;
 }
 
+/* Removed p:first-of-type special bottom margin */
+/* p:first-of-type {
+  margin-bottom: var(--spacing-large);
+} */
+
 /* Reset and normalize h1 to match body text exactly */
 h1 {
-  margin: var(--spacing-base) 0;
-  font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
-  font-weight: normal;
-  line-height: 1.5;
+  margin: var(--spacing-base) 0;                             /* spacing like paragraphs */
+  font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);       /* same size as body */
+  font-weight: normal;                                       /* normal weight, no bold */
+  line-height: 1.5;                                          /* consistent line height */
   font-family: var(--font-family);
 }
 
-/* --- Title container style --- */
+/* --- Fix title container margin and padding for consistent alignment --- */
 h1.title-link-container,
 p.title-link-container {
-  margin: 0 0 1rem 0;
+  margin: 0 0 1rem 0;  /* top 0, bottom 1rem, no left margin */
   padding: 0;
   text-indent: 0;
   text-align: left;
   font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
   font-weight: normal;
   line-height: 1.5;
-  user-select: none;
+  user-select: none; /* optional, preserved from p.title-link-container */
 }
 
 /* Reset padding and margin on the link inside the title container */
@@ -71,6 +74,8 @@ p.title-link-container > a.title-link {
 }
 
 /* Title Link Styling — unified for all titles */
+
+/* Make .title-link a plain text link with subtle hover */
 .title-link {
   color: var(--color-text);
   text-decoration: none;
@@ -90,9 +95,13 @@ p.title-link-container > a.title-link {
 }
 
 /* --- Disable pointer cursor on main page title link hover --- */
+/* 
+  To activate this, add "main-page" class to the title container on main page HTML:
+  <h1 class="title-link-container main-page">...</h1>
+*/
 .title-link-container.main-page > a.title-link:hover {
   cursor: default;
-  pointer-events: none;
+  pointer-events: none; /* optional to disable clicking */
 }
 
 /* List styles */
@@ -127,18 +136,18 @@ hr {
 /* Use global max-content-width for consistency */
 .gallery-container {
   max-width: var(--max-content-width);
-  margin: 0 auto 2rem auto;
+  margin: 0 auto 2rem auto; /* center horizontally, 2rem bottom margin */
   padding: 0;
 }
 
 /* Gallery image styles */
 #gallery-image {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain;
+  width: 100%;            /* scale to container width */
+  height: auto;           /* maintain aspect ratio */
+  display: block;         /* remove bottom whitespace */
+  object-fit: contain;    /* no image stretch */
   border-radius: var(--border-radius);
-  margin: 0 auto;
+  margin: 0 auto;         /* center horizontally */
   user-select: none;
   cursor: pointer;
 }
