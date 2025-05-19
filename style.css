@@ -82,3 +82,16 @@ hr {
   color: var(--color-text);          /* Prevent color change on hover/focus */
   text-decoration: none;             /* Prevent underline on hover/focus */
 }
+  
+.gallery-container {
+  max-width: 800px;       /* or match the width of your main content area */
+  margin: 0 auto;         /* center it horizontally */
+  padding: 1rem;          /* optional: gives it some breathing room */
+}
+
+#gallery-image {
+  width: 100%;            /* scale to container width */
+  height: auto;           /* maintain aspect ratio */
+  display: block;         /* remove bottom whitespace */
+  object-fit: contain;    /* safety: ensures images don't stretch */
+}
