@@ -10,21 +10,7 @@
   --font-family: Helvetica, Arial, sans-serif;
 }
 
-/* --- Page content wrapper for consistent margins/padding --- */
-/* Apply only on non-main pages to avoid messing up main page layout */
-body:not(.main-page) .page-content {
-  max-width: var(--max-content-width);
-  margin: 40px auto;
-  padding: 0 20px;
-}
-
-/* Optional: Main page body full width with padding */
-body.main-page {
-  margin: 0;
-  padding: 20px;
-  max-width: 100%;
-}
-
+/* --- Shared Body Styles --- */
 body {
   font-family: var(--font-family);
   line-height: 1.5;
@@ -32,6 +18,22 @@ body {
   font-weight: normal;
   background-color: var(--color-bg);
   color: var(--color-text);
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Non-Main Pages Layout --- */
+body:not(.main-page) .page-content {
+  max-width: var(--max-content-width);
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* --- Main Page Layout --- */
+body.main-page .page-content {
+  max-width: var(--max-content-width);
+  margin: 40px auto;
+  padding: 0 20px;
 }
 
 p {
@@ -53,16 +55,11 @@ p.title-link-container {
   margin: 0 0 1rem 0;
   padding: 0;
   text-indent: 0;
+  text-align: left;
   font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
   font-weight: normal;
   line-height: 1.5;
   user-select: none;
-  text-align: left;
-}
-
-/* Center title on main page only */
-body.main-page h1.title-link-container {
-  text-align: center;
 }
 
 /* Reset padding and margin on the link inside the title container */
