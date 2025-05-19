@@ -1,5 +1,6 @@
-/* style.css */
+/* style.css - Cleaned, Fixed, and Optimized */
 
+/* Design tokens */
 :root {
   --color-text: #000;
   --color-bg: #fff;
@@ -12,6 +13,7 @@
   --font-family: Helvetica, Arial, sans-serif;
 }
 
+/* Body and overall layout */
 body {
   font-family: var(--font-family);
   max-width: var(--max-content-width);
@@ -24,27 +26,84 @@ body {
   color: var(--color-text);
 }
 
+/* Paragraph styling */
 p {
   margin: var(--spacing-base) 0;
 }
 
+/* Extra bottom margin for first paragraph on page */
 p:first-of-type {
   margin-bottom: var(--spacing-large);
 }
 
+/* Lists with class "links" */
 ul.links {
   margin: 0;
   padding-left: 0;
+  list-style: none;
+}
 
+ul.links li {
+  margin: 0.3em 0;
+}
+
+/* Anchor tags - default */
+a {
+  color: var(--color-text);
+  text-decoration: underline;
+  padding: 0.2em 0.4em;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color var(--fade-duration) ease, color var(--fade-duration) ease;
+}
+
+/* Remove underline and color change for .title-link, but keep pointer cursor */
 .title-link {
   color: var(--color-text);
   text-decoration: none;
   cursor: pointer;
+  transition: none; /* no hover effect */
 }
 
+/* Ensure .title-link does not change on hover/focus/active */
 .title-link:hover,
 .title-link:focus,
 .title-link:active {
   color: var(--color-text);
   text-decoration: none;
+  outline: none; /* optional: removes outline on focus */
+}
+
+/* Horizontal rule styling */
+hr {
+  border: none;
+  border-top: 1px solid var(--hr-color);
+  margin: 1em 0;
+}
+
+/* Gallery container constrains width and centers content */
+.gallery-container {
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  padding: 0 20px; /* Match body padding for consistent margins */
+  box-sizing: border-box;
+}
+
+/* Gallery image scaling */
+#gallery-image {
+  width: 100%;        /* Scale image to container width */
+  height: auto;       /* Maintain aspect ratio */
+  display: block;     /* Remove bottom whitespace */
+  object-fit: contain;
+  border-radius: var(--border-radius);
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: var(--spacing-large) auto; /* Center vertically and horizontally */
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  a {
+    transition: none !important;
+  }
 }
