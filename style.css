@@ -61,4 +61,11 @@ hr {
   a {
     transition: none !important;
   }
+  
+  #gallery-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: var(--spacing-large) auto;
+  border-radius: var(--border-radius);
 }
