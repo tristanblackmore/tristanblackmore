@@ -42,19 +42,31 @@ h1 {
   font-family: var(--font-family);
 }
 
-/* Title Link Styling — unified for all titles */
-
-/* Container for title links on main & gallery pages */
-p.title-link-container,
-h1.title-link-container {
-  margin-top: 0;
-  margin-bottom: 1rem;
+/* --- Fix title container margin and padding for consistent alignment --- */
+h1.title-link-container,
+p.title-link-container {
+  margin: 0 0 1rem 0;  /* top 0, bottom 1rem, no left margin */
+  padding: 0;
+  text-indent: 0;
+  text-align: left;
   font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
   font-weight: normal;
   line-height: 1.5;
-  text-align: left;
-  user-select: none; /* optional */
+  user-select: none; /* optional, preserved from p.title-link-container */
 }
+
+/* Reset padding and margin on the link inside the title container */
+h1.title-link-container > a.title-link,
+p.title-link-container > a.title-link {
+  padding-left: 0;
+  margin-left: 0;
+  display: inline;
+}
+
+/* Title Link Styling — unified for all titles */
+
+/* Container for title links on main & gallery pages */
+/* Removed redundant p.title-link-container here since it's unified above */
 
 /* Make .title-link a plain text link with subtle hover */
 .title-link {
@@ -73,6 +85,16 @@ h1.title-link-container {
   color: #444;
   text-decoration: none;
   outline: none;
+}
+
+/* --- Disable pointer cursor on main page title link hover --- */
+/* 
+  To activate this, add "main-page" class to the title container on main page HTML:
+  <h1 class="title-link-container main-page">...</h1>
+*/
+.title-link-container.main-page > a.title-link:hover {
+  cursor: default;
+  pointer-events: none; /* optional to disable clicking */
 }
 
 /* List styles */
@@ -128,17 +150,4 @@ hr {
   a {
     transition: none !important;
   }
-}
-
-/* Fix main title indentation */
-p.title-link-container {
-  margin-left: 0;
-  padding-left: 0;
-  text-indent: 0;
-}
-
-p.title-link-container > a.title-link {
-  padding-left: 0;
-  margin-left: 0;
-  display: inline;
 }
