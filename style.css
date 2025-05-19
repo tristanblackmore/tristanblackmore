@@ -35,3 +35,16 @@ p:first-of-type {
 ul.links {
   margin: 0;
   padding-left: 0;
+
+.title-link {
+  color: var(--color-text);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.title-link:hover,
+.title-link:focus,
+.title-link:active {
+  color: var(--color-text);
+  text-decoration: none;
+}
