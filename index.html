@@ -18,6 +18,7 @@
       --border-radius: 2px;
       --fade-duration: 0.75s;
       --hr-color: #ccc;
+      --body-padding-top: 3.5em; /* restored top padding for spacing */
     }
 
     /* Global box-sizing for consistency */
@@ -34,8 +35,8 @@
       background-color: var(--color-bg);
 
       max-width: var(--max-content-width);
-      margin: 40px auto;
-      padding: 0 20px;
+      margin: 0 auto;
+      padding: var(--body-padding-top) 20px 40px 20px;
     }
 
     /* Make every text element consistent with body style and spacing */
@@ -44,8 +45,9 @@
       margin-bottom: var(--spacing-base);
     }
 
+    /* Increase top margin on first paragraph for spacing from top */
     p:first-of-type {
-      margin-top: 0;
+      margin-top: var(--spacing-large);
       margin-bottom: var(--spacing-large);
     }
 
@@ -125,15 +127,15 @@
 
   <script>
     const hueStops = [
-      { start: 350, end: 360, sat: 50, light: 50 },  // Maroon
-      { start: 0,   end: 15,  sat: 50, light: 50 },  // Red
-      { start: 15,  end: 45,  sat: 50, light: 50 },  // Orange
-      { start: 45,  end: 65,  sat: 50, light: 50 },  // Yellow
-      { start: 65,  end: 150, sat: 50, light: 50 },  // Green
-      { start: 150, end: 225, sat: 50, light: 50 },  // Blue
-      { start: 226, end: 235, sat: 25, light: 40 },  // Grape (desaturated)
-      { start: 236, end: 245, sat: 25, light: 40 },  // Plum (desaturated)
-      { start: 246, end: 255, sat: 25, light: 40 },  // Merlot (desaturated)
+      { start: 350, end: 360, sat: 50, light: 50 },
+      { start: 0,   end: 15,  sat: 50, light: 50 },
+      { start: 15,  end: 45,  sat: 50, light: 50 },
+      { start: 45,  end: 65,  sat: 50, light: 50 },
+      { start: 65,  end: 150, sat: 50, light: 50 },
+      { start: 150, end: 225, sat: 50, light: 50 },
+      { start: 226, end: 235, sat: 25, light: 40 },
+      { start: 236, end: 245, sat: 25, light: 40 },
+      { start: 246, end: 255, sat: 25, light: 40 },
     ];
 
     const totalSpan = hueStops.reduce((sum, band) => sum + (band.end - band.start), 0);
