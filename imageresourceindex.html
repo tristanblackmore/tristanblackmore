@@ -5,53 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Image Resource Index</title>
   <link rel="stylesheet" href="style.css" />
-
-  <style>
-    /* Title link styled like plain text (no underline, color inherit) */
-    p.title-link-container a {
-      text-decoration: none;
-      font-weight: normal;
-      color: inherit;
-      cursor: pointer;
-    }
-
-    p.title-link-container a:hover {
-      color: #444;
-      text-decoration: none;
-    }
-
-    /* Container for gallery image matches main content max-width & centered */
-    .gallery-container {
-      max-width: var(--max-content-width); /* Use your global max width variable */
-      margin: 0 auto 2rem auto; /* center horizontally + bottom margin */
-      padding: 0;
-    }
-
-    /* Gallery image fills container width, keeps aspect ratio */
-    #gallery-image {
-      width: 100%;
-      height: auto;
-      display: block;
-      margin: 0;
-      user-select: none;
-      cursor: pointer;
-    }
-
-    /* Optional: margin on title to match main page */
-    p.title-link-container {
-      margin-top: 0;
-      margin-bottom: 1rem;
-      font-size: 2rem; /* adjust if main page uses a different size */
-      font-weight: bold;
-      text-align: left; /* match main page alignment */
-    }
-  </style>
 </head>
 <body>
 
-  <!-- Title as a link, styled to look like plain text -->
+  <!-- Title as a link, styled via style.css -->
   <p class="title-link-container">
-    <a href="/" aria-label="Go to main page">Tristan Blackmore</a>
+    <a href="/" class="title-link" aria-label="Go to main page">Tristan Blackmore</a>
   </p>
 
   <div class="gallery-container">
@@ -66,31 +25,21 @@
     const preselectedImage = localStorage.getItem('imageResourceIndexImage');
 
     function getRandomImage(currentSrc) {
-      let newIndex;
-      let newUrl;
-
+      let newIndex, newUrl;
       do {
         newIndex = Math.floor(Math.random() * imageCount) + 1;
         newUrl = `https://res.cloudinary.com/${cloudName}/image/upload/image-${newIndex}.jpg`;
       } while (newUrl === currentSrc);
-
       return newUrl;
     }
 
-    let initialUrl;
-
-    if (preselectedImage) {
-      initialUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${preselectedImage}`;
-    } else {
-      initialUrl = getRandomImage(null);
-    }
-
-    galleryImage.src = initialUrl;
+    galleryImage.src = preselectedImage
+      ? `https://res.cloudinary.com/${cloudName}/image/upload/${preselectedImage}`
+      : getRandomImage(null);
 
     galleryImage.addEventListener('click', () => {
       const currentSrc = galleryImage.getAttribute('src');
-      const nextImage = getRandomImage(currentSrc);
-      galleryImage.setAttribute('src', nextImage);
+      galleryImage.setAttribute('src', getRandomImage(currentSrc));
     });
   </script>
 
