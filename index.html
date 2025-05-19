@@ -15,28 +15,28 @@
       --hr-color: #ccc;
       --max-content-width: 600px;
       --font-family: Helvetica, Arial, sans-serif;
+      --font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
+      --line-height: 1.5;
+      --font-weight: normal;
     }
 
-    body {
+    /* Apply same typography style to all text elements */
+    body, p, a, li {
       font-family: var(--font-family);
-      max-width: var(--max-content-width);
-      margin: 40px auto;
-      padding: 0 20px;
-      line-height: 1.5;
-      font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
-      font-weight: normal;
-      background-color: var(--color-bg);
+      font-size: var(--font-size);
+      line-height: var(--line-height);
+      font-weight: var(--font-weight);
       color: var(--color-text);
-    }
-
-    p {
       margin: var(--spacing-base) 0;
     }
 
+    /* Remove extra margin for the first paragraph */
     p:first-of-type {
+      margin-top: 0;
       margin-bottom: var(--spacing-large);
     }
 
+    /* Remove list padding and bullet points, keep margin consistent */
     ul.links {
       margin: 0;
       padding-left: 0;
@@ -44,18 +44,20 @@
     }
 
     ul.links li {
-      margin: 0.3em 0;
+      margin: var(--spacing-base) 0;
     }
 
+    /* Links styling */
     a {
-      color: var(--color-text);
       text-decoration: underline;
       padding: 0.2em 0.4em;
       border-radius: var(--border-radius);
       cursor: pointer;
       transition: background-color var(--fade-duration) ease, color var(--fade-duration) ease;
+      display: inline; /* Ensure no block or inline-block */
     }
 
+    /* HR styling */
     hr {
       border: none;
       border-top: 1px solid var(--hr-color);
@@ -90,16 +92,16 @@
   <p><a href="https://www.instagram.com/humanizezine/?hl=en" target="_blank" rel="noopener noreferrer">Humanize Zine</a></p>
   <p><a href="imageresourceindex.html">Image Resource Index</a></p>
 
-<hr />
+  <hr />
 
-<p>Texts</p>
-<ul class="links">
-  <li><a href="imageofproductivity.html">The Image of Productivity</a></li>
-  <li><a href="operativerelic.html">The Operative Relic</a></li>
-  <li><a href="secretplaces.html">Secret Places</a></li>
-</ul>
+  <p>Texts</p>
+  <ul class="links">
+    <li><a href="imageofproductivity.html">The Image of Productivity</a></li>
+    <li><a href="operativerelic.html">The Operative Relic</a></li>
+    <li><a href="secretplaces.html">Secret Places</a></li>
+  </ul>
 
-<hr />
+  <hr />
   
   <p>Research I'm currently following</p>
   <ul class="links">
