@@ -32,13 +32,30 @@ p:first-of-type {
   margin-bottom: var(--spacing-large);
 }
 
-/* Title Link Styles */
+/* Reset and normalize h1 to match body text exactly */
 h1 {
-  margin: var(--spacing-base) 0;
-  font-weight: normal;
-  font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
-  line-height: 1.5;
+  margin: var(--spacing-base) 0;                             /* spacing like paragraphs */
+  font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);       /* same size as body */
+  font-weight: normal;                                       /* normal weight, no bold */
+  line-height: 1.5;                                          /* consistent line height */
   font-family: var(--font-family);
+}
+
+/* Title link inside h1 */
+h1 .title-link {
+  font-size: inherit;                                        /* inherit h1 font size */
+  font-weight: inherit;                                      /* inherit h1 font weight */
+  color: var(--color-text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--fade-duration) ease, color var(--fade-duration) ease;
+}
+
+h1 .title-link:hover,
+h1 .title-link:focus,
+h1 .title-link:active {
+  color: var(--color-text);
+  text-decoration: none;
 }
 
 .title-link {
@@ -84,14 +101,14 @@ hr {
 .gallery-container {
   max-width: 800px;       /* or match the width of your main content area */
   margin: 0 auto;         /* center it horizontally */
-  padding: 1rem;          /* optional: gives it some breathing room */
+  padding: 1rem;          /* optional: breathing room */
 }
 
 #gallery-image {
   width: 100%;            /* scale to container width */
   height: auto;           /* maintain aspect ratio */
   display: block;         /* remove bottom whitespace */
-  object-fit: contain;    /* safety: ensures images don't stretch */
+  object-fit: contain;    /* ensures no image stretch */
   border-radius: var(--border-radius);
   margin: var(--spacing-large) auto; /* center with margin */
 }
