@@ -10,7 +10,7 @@
       --color-text: #000000;
       --color-bg: #ffffff;
       --spacing-base: 0.4em;
-      --spacing-large: 1em; /* adjusted for better vertical rhythm */
+      --spacing-large: 1em;
       --border-radius: 2px;
       --max-content-width: 600px;
       --font-family: Helvetica, Arial, sans-serif;
@@ -27,7 +27,7 @@
       background-color: var(--color-bg);
       color: var(--color-text);
     }
-    
+
     #gallery-image {
       display: block;
       max-width: 100%;
@@ -36,12 +36,21 @@
       cursor: pointer;
       user-select: none;
     }
+
+    /* Custom link styling for title */
+    .title-link,
+    .title-link:visited,
+    .title-link:hover,
+    .title-link:active {
+      color: black;
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
 
-    <p><a href="/">Tristan Blackmore</a></p>
-  
+  <p><a href="/" class="title-link">Tristan Blackmore</a></p>
+
   <img id="gallery-image" src="" alt="Gallery Image" />
 
   <script>
