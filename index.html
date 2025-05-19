@@ -6,53 +6,45 @@
   <title>Tristan Blackmore</title>
   <style>
     :root {
-      --color-text: #000000;
-      --color-bg: #ffffff;
+      --color-text: #000;
+      --color-bg: #fff;
       --spacing-base: 0.4em;
       --spacing-large: 1.4em;
-      --font-family: Helvetica, Arial, sans-serif;
-      --font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
-      --line-height: 1.5;
-      --font-weight: normal;
-      --max-content-width: 600px;
       --border-radius: 2px;
       --fade-duration: 0.75s;
       --hr-color: #ccc;
-    }
-
-    /* Global box-sizing for consistency */
-    *, *::before, *::after {
-      box-sizing: border-box;
+      --max-content-width: 600px;
+      --font-family: Helvetica, Arial, sans-serif;
     }
 
     body {
       font-family: var(--font-family);
-      font-size: var(--font-size);
-      line-height: var(--line-height);
-      font-weight: var(--font-weight);
-      color: var(--color-text);
-      background-color: var(--color-bg);
-
       max-width: var(--max-content-width);
-      margin: 40px auto 80px auto; /* same top & bottom margin as essay page */
+      margin: 40px auto;
       padding: 0 20px;
+      line-height: 1.5;
+      font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
+      font-weight: normal;
+      background-color: var(--color-bg);
+      color: var(--color-text);
     }
 
-    header {
+    p {
+      margin: var(--spacing-base) 0;
+    }
+
+    p:first-of-type {
       margin-bottom: var(--spacing-large);
     }
 
-    /* Title styling consistent with essay page */
-    h1#site-title {
+    ul.links {
       margin: 0;
-      font-size: var(--font-size);
-      font-weight: normal;
-      font-family: var(--font-family);
+      padding-left: 0;
+      list-style: none;
     }
 
-    /* Remove margin on header paragraphs */
-    p {
-      margin: var(--spacing-base) 0;
+    ul.links li {
+      margin: 0.3em 0;
     }
 
     a {
@@ -70,16 +62,6 @@
       margin: 1em 0;
     }
 
-    ul.links {
-      margin: 0 0 var(--spacing-large) 0;
-      padding-left: 0;
-      list-style: none;
-    }
-
-    ul.links li {
-      margin: var(--spacing-base) 0;
-    }
-
     @media (prefers-reduced-motion: reduce) {
       a {
         transition: none !important;
@@ -89,10 +71,7 @@
 </head>
 <body>
 
-  <header>
-    <h1 id="site-title">Tristan Blackmore</h1>
-  </header>
-
+  <p>Tristan Blackmore</p>
   <p>1994&nbsp;&nbsp;&nbsp;Born in Berkeley, California, USA</p>
   <p>2016&nbsp;&nbsp;&nbsp;University of Michigan (B.S.Arch)</p>
   <p>2018&nbsp;&nbsp;&nbsp;UC Berkeley (M.Arch)</p>
@@ -107,21 +86,12 @@
   <hr />
 
   <p>Projects</p>
-  <p><a href="https://www.instagram.com/tristanblackmore/?hl=en" target="_blank" rel="noopener noreferrer">Tristan Blackmore</a></p>
-  <p><a href="https://www.instagram.com/humanizezine/?hl=en" target="_blank" rel="noopener noreferrer">Humanize Zine</a></p>
-  <p><a href="imageresourceindex.html">Image Resource Index</a></p>
+  <p><a href="https://www.instagram.com/tristanblackmore/?hl=en" target="_blank" rel="noopener noreferrer">tristan blackmore</a></p>
+  <p><a href="https://www.instagram.com/humanizezine/?hl=en" target="_blank" rel="noopener noreferrer">humanize zine</a></p>
+  <p><a href="imageresourceindex.html">image resource index</a></p>
 
   <hr />
 
-  <p>Texts</p>
-  <ul class="links">
-    <li><a href="imageofproductivity.html">The Image of Productivity</a></li>
-    <li><a href="operativerelic.html">The Operative Relic</a></li>
-    <li><a href="secretplaces.html">Secret Places</a></li>
-  </ul>
-
-  <hr />
-  
   <p>Research I'm currently following</p>
   <ul class="links">
     <li><a href="https://doughnuteconomics.org" target="_blank" rel="noopener noreferrer">Doughnut Economics</a></li>
@@ -133,7 +103,97 @@
   </ul>
 
   <script>
-    // JS code unchanged, omitted here for brevity
+    const hueStops = [
+      { start: 350, end: 360, sat: 50, light: 50 },  // Maroon
+      { start: 0,   end: 15,  sat: 50, light: 50 },  // Red
+      { start: 15,  end: 45,  sat: 50, light: 50 },  // Orange
+      { start: 45,  end: 65,  sat: 50, light: 50 },  // Yellow
+      { start: 65,  end: 150, sat: 50, light: 50 },  // Green
+      { start: 150, end: 225, sat: 50, light: 50 },  // Blue
+      { start: 226, end: 235, sat: 25, light: 40 },  // Grape (desaturated)
+      { start: 236, end: 245, sat: 25, light: 40 },  // Plum (desaturated)
+      { start: 246, end: 255, sat: 25, light: 40 },  // Merlot (desaturated)
+    ];
+
+    const totalSpan = hueStops.reduce((sum, band) => sum + (band.end - band.start), 0);
+
+    function getHueData(index) {
+      const position = (index / 100) * totalSpan;
+      let acc = 0;
+      for (const band of hueStops) {
+        const range = band.end - band.start;
+        if (position < acc + range) {
+          const rel = position - acc;
+          return {
+            hue: band.start + rel,
+            sat: band.sat,
+            light: band.light,
+          };
+        }
+        acc += range;
+      }
+      return { hue: 0, sat: 50, light: 50 };
+    }
+
+    function hslToHex(h, s, l) {
+      h /= 360;
+      s /= 100;
+      l /= 100;
+      let r, g, b;
+      if (s === 0) {
+        r = g = b = l;
+      } else {
+        const hue2rgb = (p, q, t) => {
+          if (t < 0) t += 1;
+          if (t > 1) t -= 1;
+          if (t < 1 / 6) return p + (q - p) * 6 * t;
+          if (t < 1 / 2) return q;
+          if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+          return p;
+        };
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1 / 3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1 / 3);
+      }
+      const toHex = x => {
+        const hex = Math.round(x * 255).toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+      };
+      return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+    }
+
+    function getBrightness(hex) {
+      const r = parseInt(hex.substr(1, 2), 16);
+      const g = parseInt(hex.substr(3, 2), 16);
+      const b = parseInt(hex.substr(5, 2), 16);
+      return Math.sqrt(0.299 * r * r + 0.587 * g * g + 0.114 * b * b);
+    }
+
+    function getColor(index) {
+      const { hue, sat, light } = getHueData(index);
+      return hslToHex(hue, sat, light);
+    }
+
+    let colorIndex = Math.floor(Math.random() * 101);
+    const step = 5;
+
+    document.querySelectorAll('a').forEach(link => {
+      link.addEventListener('mouseenter', () => {
+        link.style.transition = 'none';
+        const bgColor = getColor(colorIndex);
+        colorIndex = (colorIndex + step) % 101;
+        link.style.backgroundColor = bgColor;
+        link.style.color = getBrightness(bgColor) < 130 ? '#fff' : '#000';
+      });
+
+      link.addEventListener('mouseleave', () => {
+        link.style.transition = `background-color var(--fade-duration) ease, color var(--fade-duration) ease`;
+        link.style.backgroundColor = '';
+        link.style.color = '';
+      });
+    });
   </script>
 </body>
 </html>
