@@ -41,37 +41,40 @@ h1 {
   font-family: var(--font-family);
 }
 
-/* Title link inside h1 */
-h1 .title-link {
-  font-size: inherit;                                        /* inherit h1 font size */
-  font-weight: inherit;                                      /* inherit h1 font weight */
-  color: var(--color-text);
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color var(--fade-duration) ease, color var(--fade-duration) ease;
+/* Title Link Styling — unified for all titles */
+
+/* Container for title links on main & gallery pages */
+p.title-link-container,
+h1.title-link-container {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
+  font-weight: normal;
+  line-height: 1.5;
+  text-align: left;
+  user-select: none; /* optional */
 }
 
-h1 .title-link:hover,
-h1 .title-link:focus,
-h1 .title-link:active {
-  color: var(--color-text);
-  text-decoration: none;
-}
-
+/* Make .title-link a plain text link with subtle hover */
 .title-link {
   color: var(--color-text);
   text-decoration: none;
   cursor: pointer;
-  transition: background-color var(--fade-duration) ease, color var(--fade-duration) ease;
+  font-weight: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  transition: color var(--fade-duration) ease;
 }
 
 .title-link:hover,
 .title-link:focus,
 .title-link:active {
-  color: var(--color-text);
+  color: #444;
   text-decoration: none;
+  outline: none;
 }
 
+/* List styles */
 ul.links {
   margin: 0;
   padding-left: 0;
@@ -82,6 +85,7 @@ ul.links li {
   margin: 0.3em 0;
 }
 
+/* Default anchor styles */
 a {
   color: var(--color-text);
   text-decoration: underline;
@@ -91,6 +95,7 @@ a {
   transition: background-color var(--fade-duration) ease, color var(--fade-duration) ease;
 }
 
+/* Horizontal rule style */
 hr {
   border: none;
   border-top: 1px solid var(--hr-color);
@@ -98,19 +103,23 @@ hr {
 }
 
 /* Gallery Container */
+/* Use global max-content-width for consistency */
 .gallery-container {
-  max-width: 800px;       /* or match the width of your main content area */
-  margin: 0 auto;         /* center it horizontally */
-  padding: 1rem;          /* optional: breathing room */
+  max-width: var(--max-content-width);
+  margin: 0 auto 2rem auto; /* center horizontally, 2rem bottom margin */
+  padding: 0;
 }
 
+/* Gallery image styles */
 #gallery-image {
   width: 100%;            /* scale to container width */
   height: auto;           /* maintain aspect ratio */
   display: block;         /* remove bottom whitespace */
-  object-fit: contain;    /* ensures no image stretch */
+  object-fit: contain;    /* no image stretch */
   border-radius: var(--border-radius);
-  margin: var(--spacing-large) auto; /* center with margin */
+  margin: 0 auto;         /* center horizontally */
+  user-select: none;
+  cursor: pointer;
 }
 
 /* Accessibility: Reduce motion preference */
