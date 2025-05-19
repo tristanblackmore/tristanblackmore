@@ -1,11 +1,13 @@
-/* style.css - shared stylesheet */
+/* style.css */
 
 :root {
-  --color-text: #000000;
-  --color-bg: #ffffff;
+  --color-text: #000;
+  --color-bg: #fff;
   --spacing-base: 0.4em;
-  --spacing-large: 1em;
+  --spacing-large: 1.4em;
   --border-radius: 2px;
+  --fade-duration: 0.75s;
+  --hr-color: #ccc;
   --max-content-width: 600px;
   --font-family: Helvetica, Arial, sans-serif;
 }
@@ -22,26 +24,41 @@ body {
   color: var(--color-text);
 }
 
-/* Reusable image style */
-#gallery-image {
-  display: block;
-  max-width: 100%;
-  margin-top: var(--spacing-large);
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  user-select: none;
+p {
+  margin: var(--spacing-base) 0;
 }
 
-/* Consistent title link style */
-.title-link,
-.title-link:visited,
-.title-link:hover,
-.title-link:active {
-  color: black;
-  text-decoration: none;
-  font-size: 1.25em;
-  font-weight: bold;
-  display: inline-block;
+p:first-of-type {
   margin-bottom: var(--spacing-large);
 }
 
+ul.links {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+ul.links li {
+  margin: 0.3em 0;
+}
+
+a {
+  color: var(--color-text);
+  text-decoration: underline;
+  padding: 0.2em 0.4em;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color var(--fade-duration) ease, color var(--fade-duration) ease;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--hr-color);
+  margin: 1em 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a {
+    transition: none !important;
+  }
+}
