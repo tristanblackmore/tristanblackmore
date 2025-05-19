@@ -28,9 +28,10 @@ p {
   margin: var(--spacing-base) 0;
 }
 
-p:first-of-type {
+/* Removed p:first-of-type special bottom margin */
+/* p:first-of-type {
   margin-bottom: var(--spacing-large);
-}
+} */
 
 /* Reset and normalize h1 to match body text exactly */
 h1 {
