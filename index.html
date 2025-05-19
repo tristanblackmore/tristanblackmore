@@ -13,6 +13,37 @@
       cursor: default !important;
     }
   </style>
+
+  <script>
+    (function() {
+      const imageCount = 719;
+      const cloudName = 'dec78b2ft';
+
+      // Generate a random integer between 1 and imageCount inclusive
+      function getRandomIndex() {
+        return Math.floor(Math.random() * imageCount) + 1;
+      }
+
+      // Compose Cloudinary URL and filename
+      const randomIndex = getRandomIndex();
+      const randomFilename = `image-${randomIndex}.jpg`;
+      const randomImageUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${randomFilename}`;
+
+      // Save filename to localStorage for gallery page to use
+      try {
+        localStorage.setItem('imageResourceIndexImage', randomFilename);
+      } catch (e) {
+        // localStorage might be unavailable; fail silently
+      }
+
+      // Create and append a preload link tag dynamically
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = randomImageUrl;
+      document.head.appendChild(link);
+    })();
+  </script>
 </head>
 <body>
 
