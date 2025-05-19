@@ -12,6 +12,13 @@
   --font-family: Helvetica, Arial, sans-serif;
 }
 
+/* Global box-sizing for consistent width calculations */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 /* Page content wrapper for consistent margins/padding */
 /* Use this on essay page or anywhere you want consistent horizontal spacing */
 .page-content {
@@ -22,47 +29,43 @@
 
 body {
   font-family: var(--font-family);
-  /* Removed max-width, margin and padding from body to avoid conflict
-     We want these controlled by .page-content for more flexibility */
-  /* max-width: var(--max-content-width); */
-  /* margin: 40px auto; */
-  /* padding: 0 20px; */
+  /* We control max-width, margin and padding via .page-content for layout flexibility */
   line-height: 1.5;
   font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
   font-weight: normal;
   background-color: var(--color-bg);
   color: var(--color-text);
+  margin: 0;  /* reset default margin */
+  padding: 0; /* reset default padding */
 }
 
+/* Paragraph styling with vertical margins and justified text for neat block appearance */
 p {
   margin: var(--spacing-base) 0;
+  text-align: justify;
 }
 
-/* Removed p:first-of-type special bottom margin */
-/* p:first-of-type {
-  margin-bottom: var(--spacing-large);
-} */
-
 /* Reset and normalize h1 to match body text exactly */
+/* Use normal font-weight and consistent line height */
 h1 {
-  margin: var(--spacing-base) 0;                             /* spacing like paragraphs */
-  font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);       /* same size as body */
-  font-weight: normal;                                       /* normal weight, no bold */
-  line-height: 1.5;                                          /* consistent line height */
+  margin: var(--spacing-base) 0;
+  font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
+  font-weight: normal;
+  line-height: 1.5;
   font-family: var(--font-family);
 }
 
-/* --- Fix title container margin and padding for consistent alignment --- */
+/* Fix title container margin and padding for consistent alignment */
 h1.title-link-container,
 p.title-link-container {
-  margin: 0 0 1rem 0;  /* top 0, bottom 1rem, no left margin */
+  margin: 0 0 1rem 0;  /* no top margin, 1rem bottom */
   padding: 0;
   text-indent: 0;
   text-align: left;
   font-size: clamp(1rem, 1.125vw + 0.5rem, 1.125rem);
   font-weight: normal;
   line-height: 1.5;
-  user-select: none; /* optional, preserved from p.title-link-container */
+  user-select: none; /* preserve text select behavior */
 }
 
 /* Reset padding and margin on the link inside the title container */
@@ -74,8 +77,7 @@ p.title-link-container > a.title-link {
 }
 
 /* Title Link Styling — unified for all titles */
-
-/* Make .title-link a plain text link with subtle hover */
+/* Plain text link with subtle hover effect */
 .title-link {
   color: var(--color-text);
   text-decoration: none;
@@ -94,14 +96,13 @@ p.title-link-container > a.title-link {
   outline: none;
 }
 
-/* --- Disable pointer cursor on main page title link hover --- */
-/* 
-  To activate this, add "main-page" class to the title container on main page HTML:
-  <h1 class="title-link-container main-page">...</h1>
+/* Disable pointer cursor on main page title link hover */
+/* Activate this by adding "main-page" class to title container in main page HTML:
+   <h1 class="title-link-container main-page">...</h1>
 */
 .title-link-container.main-page > a.title-link:hover {
   cursor: default;
-  pointer-events: none; /* optional to disable clicking */
+  pointer-events: none; /* disables clicking */
 }
 
 /* List styles */
