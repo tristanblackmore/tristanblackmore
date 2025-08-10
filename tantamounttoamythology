@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Text Page</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<h1 class="title-link-container">
+  <a href="/" class="title-link" aria-label="Go to main page">Tristan Blackmore</a>
+</h1>
+
+<div class="text-container">
+  <p>Insert text here</p>
+</div>
+
+</body>
+</html>
